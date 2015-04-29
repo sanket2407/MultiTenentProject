@@ -1,0 +1,21 @@
+ <html>
+ <head>
+ <title><%=page_title%></title>
+ </head>
+ <body>
+ <table>
+ <% if(data.length){ 
+                                
+                 for(var i = 0;i < data.length;i++) { %>
+                 
+                <tr>
+                    <td><%=(i+1)%></td>
+                    <td><%=data[i].firstname%></td>
+                    <td><%=data[i].lastname%></td>
+                    <td><%=data[i].email%></td>
+                    <td><%=data[i].password%></td>
+               </tr>
+         <% }
+         </table>
+ </body>
+ </html>

@@ -1,0 +1,18 @@
+<html>
+<head>
+<script>
+function editUser(email)
+{
+alert("calling");
+	document.myForm.action = "/users/edit/"+email;
+	document.myForm.method="post";
+	document.myForm.submit();
+}
+</script>
+</head>
+<body>
+<form name="myForm" method=""></form>
+Welcome <%=data[0].firstname%> <%=data[0].lastname%>
+<Button onclick="editUser()">Edit User</Button>
+</body>
+</html>

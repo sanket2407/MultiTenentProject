@@ -1,0 +1,15 @@
+<html>
+<head>
+<script>
+function editUser(email)
+{
+	
+}
+</script>
+</head>
+<body>
+<form name="myForm" method=""></form>
+Welcome <%=data[0].firstname%> <%=data[0].lastname%>
+<Button onclick="editUser(<%=data[0].email%>)">Edit User</Button>
+</body>
+</html>

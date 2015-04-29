@@ -1,0 +1,21 @@
+/**
+ * New node file
+ */
+exports.save_edit = function(req, res) {
+
+	var input = JSON.parse(JSON.stringify(req.body));
+	// var id = req.params.id;
+
+	console.log(input.firstname);
+	console.log(input.lastname);
+	console.log(input.email);
+	console.log(input.password);
+
+	var data = {
+		firstname : input.firstname,
+		lastname : input.lastname,
+		email : input.email,
+		password : input.password,
+	};
+
+};

@@ -1,0 +1,147 @@
+/*
+* User CRUD operation - Author: Sanket Patel
+*/
+
+/*Login Authentication. */
+
+exports.loginAuthentication = function(req, res){
+
+  req.getConnection(function(err,connection){
+	  
+	  var input = JSON.parse(JSON.stringify(req.body));
+       console.log(input.email);
+        var query = connection.query("SELECT * FROM user WHERE email = '"+input.email+"' ",function(err,rows)
+        {
+        	   console.log(rows.length);
+            if(err)
+            {   console.log("Error Selecting : %s ",err );}
+         
+            else if(rows.length === 0)
+            	{
+            	 res.render('login',{page_title:"Customers - Node.js",error:"username or password is not correct"});
+            	}
+            else
+            	{
+            	if(rows[0].password === input.password)
+            		{
+                 res.render('landing',{page_title:"Customers - Node.js",data:rows});
+            		}
+            	else
+            		{
+            		res.render('login',{page_title:"Customers - Node.js",error:"password is not correct"});
+            		}
+            	}     
+           
+         });
+         
+         //console.log(query.sql);
+    });
+  
+};
+
+/*Signup the user*/
+
+exports.signup = function(req,res){
+    
+    var input = JSON.parse(JSON.stringify(req.body));
+    
+    req.getConnection(function (err, connection) {
+        
+        var query = connection.query("INSERT INTO user (firstname,lastname,email,password) values ('"+input.firstname+"','"+input.lastname+"','"+input.email+"','"+input.password+"') ",function(err, rows)
+        {
+  
+          if (err)
+          {console.log("Error inserting : %s ",err );
+          res.render('signup',{error : "user already exist"});
+          }
+          else{
+          res.render('login',{error : "user is successfully created. Please Log in to continue!"});
+          }
+        });
+    });
+};
+
+/*Edit the user*/
+
+exports.add = function(req, res){
+  res.render('add_customer',{page_title:"Add Customers - Node.js"});
+};
+
+exports.edit = function(req, res){
+    
+    var email = req.params.email;
+    
+    req.getConnection(function(err,connection){
+       
+        var query = connection.query("SELECT * FROM user WHERE email = '"+email+"'",function(err,rows)
+        {
+            
+            if(err)
+            {   console.log("Error Selecting : %s ",err );
+                 res.render('error',{error:err});
+            }
+            else{
+            res.render('edit_user',{page_title:"Edit Customers - Node.js",data:rows,error:""});
+            }
+           
+         });
+         
+         //console.log(query.sql);
+    }); 
+};
+
+/*Save changes int the user*/
+
+exports.edit_save = function(req,res){
+    
+    var input = JSON.parse(JSON.stringify(req.body));
+    var userid = req.params.userid;
+    
+ req.getConnection(function (err, connection) {
+        
+	   var query = connection.query("UPDATE user SET firstname = '"+input.firstname+"', lastname = '"+input.lastname+"', email = '"+input.email+"', password = '"+input.password+"' WHERE userid = '"+userid+"'",function(err, rows)
+        {  
+          if (err)
+          {
+        	  console.log("Error updating : %s ",err );
+        	  var query = connection.query("SELECT * FROM user WHERE userid = '"+userid+"'",function(err,rows)
+        		        {
+        		            if(err)
+        		            {   console.log("Error Selecting : %s ",err );
+        		                 res.render('error',{error:err});
+        		            }
+        		            else{
+        		            res.render('edit_user',{page_title:"Edit Customers - Node.js",data:rows,error:"user with this name already exists"});
+        		            }
+        		           
+        		         });
+          }
+          else{
+          res.render('login',{error : "user is successfully Edited. Please Log in to continue!"});
+          }
+        });
+    });
+    
+};
+
+
+exports.delete_user = function(req,res){
+          
+     var email = req.params.eamil;
+    
+     req.getConnection(function (err, connection) {
+        
+        connection.query("DELETE FROM user  WHERE email ='"+email+"'",function(err, rows)
+        {
+            
+             if(err)
+             { console.log("Error deleting : %s ",err );}
+            
+             res.redirect('/customers');
+             
+        });
+        
+     });
+};
+
+

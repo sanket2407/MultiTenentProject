@@ -1,0 +1,7 @@
+<html>
+<head>
+</head>
+<body>
+Welcome <%=data[0].firstname%> <%=data[0].lastname%>
+</body>
+</html>

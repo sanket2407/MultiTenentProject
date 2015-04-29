@@ -2,5 +2,5 @@
  * New node file
  */
 exports.signup = function(req, res){
-  res.render('signup', { title: 'Express' });
+  res.render('signup', { title: 'Express', error: ""});
 };

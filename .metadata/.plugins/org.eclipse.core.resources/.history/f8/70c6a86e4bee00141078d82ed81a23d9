@@ -1,0 +1,26 @@
+/**
+ * New node file
+ */
+var connection  = require('express-myconnection'); 
+
+exports.save_edit = function(req, res) {
+
+	var input = JSON.parse(JSON.stringify(req.body));
+	// var id = req.params.id;
+
+	console.log(input.firstname);
+	console.log(input.lastname);
+	console.log(input.email);
+	console.log(input.password);
+
+
+    var query = connection.query("INSERT INTO user (firstname, lastname, email, password) values ('"+input.firstname+"','"+input.lastname+"','"+input.email+"','"+input.password+"') ", function(err)
+            {
+      
+              if (err)
+              {     console.log("Error inserting : %s ",err ); }
+             
+              res.redirect('/');
+              
+            });
+};

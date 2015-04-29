@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  
+
 <head>
     <meta charset="utf-8">
     <title>Login - Software Modeling</title>
@@ -16,6 +16,18 @@
     
 <link href="/css/style.css" rel="stylesheet" type="text/css">
 <link href="/css/pages/signin.css" rel="stylesheet" type="text/css">
+
+<script>
+
+function formSubmit()
+{
+	document.myForm.action = "/users/login";
+	document.myForm.method = "POST";
+	document.myForm.submit();
+}
+</script>
+
+
 
 </head>
 
@@ -33,7 +45,7 @@
 				<span class="icon-bar"></span>
 			</a>
 			
-			<a class="brand" href="index.html">
+			<a class="brand" href="/">
 				Software Modeling		
 			</a>		
 			
@@ -41,14 +53,14 @@
 				<ul class="nav pull-right">
 					
 					<li class="">						
-						<a href="signup" class="">
+						<a href="/signup" class="">
 							Don't have an account?
 						</a>
 						
 					</li>
 					
 					<li class="">						
-						<a href="index.html" class="">
+						<a href="/" class="">
 							<i class="icon-chevron-left"></i>
 							Back to Homepage
 						</a>
@@ -69,9 +81,9 @@
 <div class="account-container">
 	
 	<div class="content clearfix">
-		
-		<form action="#" method="post">
-		
+	
+	<form name="myForm" method="">
+	
 			<h1>Member Login</h1>		
 			
 			<div class="login-fields">
@@ -80,7 +92,7 @@
 				
 				<div class="field">
 					<label for="username">Username</label>
-					<input type="text" id="username" name="username" value="" placeholder="Username" class="login username-field" />
+					<input type="text" id="email" name="email" value="" placeholder="Email" class="login username-field" />
 				</div> <!-- /field -->
 				
 				<div class="field">
@@ -88,33 +100,26 @@
 					<input type="password" id="password" name="password" value="" placeholder="Password" class="login password-field"/>
 				</div> <!-- /password -->
 				
-			</div> <!-- /login-fields -->
+				<font style="color:red">
+				<%if(error!==""){%>
+				<div class="field">
+				<%=error%>
+				</div>
+				<%}%>
+				</font>
+				</div> <!-- /login-fields -->
 			
 			<div class="login-actions">
-				
-				<span class="login-checkbox">
-					<input id="Field" name="Field" type="checkbox" class="field login-checkbox" value="First Choice" tabindex="4" />
-					<label class="choice" for="Field">Keep me signed in</label>
-				</span>
 									
-				<button class="button btn btn-success btn-large">Sign In</button>
+				<button class="button btn btn-primary btn-large" onclick="formSubmit()">Log In</button>
 				
 			</div> <!-- .actions -->
 			
-			
-			
-		</form>
+	</form>
 		
 	</div> <!-- /content -->
 	
 </div> <!-- /account-container -->
-
-
-
-<div class="login-extra">
-	<a href="#">Reset Password</a>
-</div> <!-- /login-extra -->
-
 
 <script src="js/jquery-1.7.2.min.js"></script>
 <script src="js/bootstrap.js"></script>

@@ -1,0 +1,10 @@
+var connection  = require('express-myconnection'); 
+
+exports.getConnection =   function(mysql,{
+    host: 'localhost',
+    user: 'root',
+    password : 'root',
+    port : 3306, //port mysql
+    database:'multitenantproject'
+
+},'pool'});

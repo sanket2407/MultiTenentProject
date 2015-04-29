@@ -1,0 +1,6 @@
+var connection  = require('express-myconnection'); 
+
+exports.getConnection = function(req, res)
+{
+	
+}
