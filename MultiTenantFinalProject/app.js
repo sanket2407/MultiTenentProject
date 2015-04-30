@@ -54,7 +54,7 @@ app.use(
 
 );
 
-app.get('/', routes.index);
+app.get('/', login.login);
 app.get('/login', login.login);
 app.get('/signup', signup.signup);
 app.post('/users/signup',users.signup);
