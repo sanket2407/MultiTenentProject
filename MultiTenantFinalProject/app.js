@@ -15,9 +15,13 @@ var mysql = require('mysql');
 var users = require('./routes/users');  
 var signup = require('./routes/signup');
 var login = require('./routes/login');
+var home = require('./routes/home');
 
 //load project routes
 var project = require('./routes/project');
+
+app.use(express.cookieParser());
+app.use(express.session({secret: '1234567890QWERTY'}));
 
 // all environments
 app.set('port', process.env.PORT || 4303);
@@ -45,9 +49,9 @@ app.use(
     
     connection(mysql,{
         
-        host: 'localhost',
+     host: 'localhost',
         user: 'root',
-        password : 'root',
+        password : 'welcome1',
         port : 3306, //port mysql
         database:'cmpe281'
 
@@ -64,6 +68,8 @@ app.post('/users/login',users.loginAuthentication);
 app.post('/users/edit/:email',users.edit);
 app.post('/users/edit_save/:userid',users.edit_save);
 app.post('/users/delete/:email',users.delete_user);
+app.get('/home', home.showDashboard);
+app.post('/createProject', home.createProject);
 
 //project
 app.get('/projects/:userid',project.list);
