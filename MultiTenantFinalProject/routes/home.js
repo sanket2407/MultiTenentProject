@@ -40,20 +40,10 @@ exports.createProject = function(req, res) {
 		} else if (projectType === "Waterfall") {
 			projectTypeInt = 3;
 		}
+			
+		startDate = startDate.toISOString().split('T')[0];
+		endDate = endDate.toISOString().split('T')[0];
 		
-		
-		console.log(projectName);
-		console.log(projectDesc);
-		console.log(startDate);
-		console.log(endDate);
-		console.log(projectType);
-		
-	
-		startDate = stringToDate(startDate,"mm/dd/yyyy","/");
-		endDate = stringToDate(endDate,"mm/dd/yyyy","/");
-		
-		console.log(startDate);
-		console.log(endDate);
 		
 		var createUser ="INSERT INTO project_master (project_name,project_description,project_type,userid,start_date,end_date) " +
 				"VALUES ('"+projectName+"','"+ projectDesc+"','"+ projectTypeInt+"','"+loggedInUser+"','"+startDate+"','"+endDate+"')";
@@ -71,16 +61,3 @@ exports.createProject = function(req, res) {
 };
 
 
-function stringToDate(_date,_format,_delimiter)
-{
-            var formatLowerCase=_format.toLowerCase();
-            var formatItems=formatLowerCase.split(_delimiter);
-            var dateItems=_date.split(_delimiter);
-            var monthIndex=formatItems.indexOf("mm");
-            var dayIndex=formatItems.indexOf("dd");
-            var yearIndex=formatItems.indexOf("yyyy");
-            var month=parseInt(dateItems[monthIndex]);
-            month-=1;
-            var formatedDate = new Date(dateItems[yearIndex],month,dateItems[dayIndex]);
-            return formatedDate;
-}
