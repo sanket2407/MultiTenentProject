@@ -1,0 +1,119 @@
+/*@font-face {
+    font-family: "Helvetica Neue Std Lt";
+    src: url("http://markets.money.cnn.com/Marketsdata/ResourceManager/A0wdBgLPE5jd3Sofzvyt2g2/d/f/635585114291812235/Marketsdata/content/styles/Fonts/HelveticaNeueLTStdLt.otf") format('opentype');
+}
+*/
+/* For Price Change Widget */
+.fLeft {
+	float: left;
+}
+
+.priceChange-Widget {
+	color: #151515;
+	background-color: #F6DA5A;
+}
+
+.priceChange-Widget .wsod_sideInner {
+	position: relative;
+}
+
+.priceChange-Widget .boxheading {
+	border-bottom: 1px solid #e6e6e6;
+	font-size: 20px;
+	font-weight: bold;
+	padding-bottom: 6px;
+}
+
+
+.priceChange-Widget h1 {
+	font-size:35px;
+}
+
+.priceChange-Widget h2.label {
+	font-size:15px;
+	font-weight:normal;
+	color:#666;
+	letter-spacing:0;
+}
+
+.priceChange-Widget .wsod_pgheader {
+	padding-bottom:10px;
+}
+
+.priceChange-Widget h3 {
+	margin-top:25px;
+}
+
+.priceChange-Widget table {
+	width: 100%;
+	margin: 15px 0;
+	display: inline-block;
+}
+
+.priceChange-Widget table.quoteData td, 
+.priceChange-Widget table.quoteData th{
+	text-align: left;
+	white-space: nowrap;
+	padding: 0;
+}
+
+.priceChange-Widget table.quoteData th {
+	color: #FFF;
+	font-size: 20px;
+	font-weight: lighter;
+}
+
+.priceChange-Widget table.quoteData td.price-value {
+	color: #FFF;
+	font-size: 47px;
+	font-weight: lighter;
+}
+
+.priceChange-Widget table.quoteData td.price-change {
+	color: #7B6D2D;
+	font-size: 20px;
+	font-weight: lighter;
+}
+
+
+#price-change-widget-right {
+	position: absolute;
+	top: 33px;
+	right: 15px;
+}
+
+/*.priceChange-Widget div.arrow {
+	width: 22px;
+	height:22px;
+	background: url("http://markets.money.cnn.com/Marketsdata/ResourceManager/4U6siogFCfJnCSWC_H0wDQ2/d/f/635458933145300668/Marketsdata/content/Images/Widgets/Arrow_1x.jpg") no-repeat;
+	background-position: 0 0;
+	margin-top: 10px;
+	float: left;
+}
+
+.priceChange-Widget div.arrow.down {
+	background-position: 0 -22px;
+
+
+}*/
+/*.priceChange-Widget span.smallpercent {
+	font-size: 21px !important;
+}*/
+
+.priceChange-Widget span.pos { color: #7a9934; }
+.priceChange-Widget span.neg { color: #9c3434; }
+
+.priceChange-Widget div.bitcoin-icon {
+	width: 67px;
+	height: 67px;
+	background-size: 100%;
+	background-image: url("http://markets.money.cnn.com/Marketsdata/ResourceManager/3Q2u5v77PBhLZr_pSlVRgA2/d/f/635585114291812235/Marketsdata/content/Images/Widgets/bitcoin-logo.png");
+}
+
+/*Retina*/ 
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+	.priceChange-Widget div.bitcoin-icon {
+		background-image: url("http://markets.money.cnn.com/Marketsdata/ResourceManager/XOgTbYqa1kaPuwlcj36yAA2/d/f/635585114291812235/Marketsdata/content/Images/Widgets/bitcoin-logo2x.png");
+		background-size: 100%;
+	}
+}

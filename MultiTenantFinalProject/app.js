@@ -7,16 +7,17 @@ var express = require('express');
 var routes = require('./routes');
 var http = require('http');
 var path = require('path');
-
-//load customers route
-var users = require('./routes/users');  
-var signup = require('./routes/signup');
-var login = require('./routes/login');
-
 var app = express();
 var connection  = require('express-myconnection'); 
 var mysql = require('mysql');
 
+//load customers routes
+var users = require('./routes/users');  
+var signup = require('./routes/signup');
+var login = require('./routes/login');
+
+//load project routes
+var project = require('./routes/project');
 
 // all environments
 app.set('port', process.env.PORT || 4303);
@@ -48,12 +49,13 @@ app.use(
         user: 'root',
         password : 'root',
         port : 3306, //port mysql
-        database:'multitenantproject'
+        database:'cmpe281'
 
     },'pool') //or single
 
 );
 
+//user crud and index
 app.get('/', routes.index);
 app.get('/login', login.login);
 app.get('/signup', signup.signup);
@@ -62,6 +64,10 @@ app.post('/users/login',users.loginAuthentication);
 app.post('/users/edit/:email',users.edit);
 app.post('/users/edit_save/:userid',users.edit_save);
 app.post('/users/delete/:email',users.delete_user);
+
+//project
+app.get('/projects/:userid',project.list);
+app.get('/projects/edit/:userid/:projectid',project.edit);
 
 app.use(app.router);
 
