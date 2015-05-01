@@ -12,11 +12,14 @@ var path = require('path');
 var users = require('./routes/users');  
 var signup = require('./routes/signup');
 var login = require('./routes/login');
+var home = require('./routes/home');
 
 var app = express();
 var connection  = require('express-myconnection'); 
 var mysql = require('mysql');
 
+app.use(express.cookieParser());
+app.use(express.session({secret: '1234567890QWERTY'}));
 
 // all environments
 app.set('port', process.env.PORT || 4303);
@@ -46,15 +49,17 @@ app.use(
         
         host: 'localhost',
         user: 'root',
-        password : 'root',
+        password : 'welcome1',
         port : 3306, //port mysql
-        database:'multitenantproject'
+        database:'cmpe281'
 
     },'pool') //or single
 
 );
 
 app.get('/', login.login);
+app.get('/home', home.showDashboard);
+app.post('/createProject', home.createProject);
 app.get('/login', login.login);
 app.get('/signup', signup.signup);
 app.post('/users/signup',users.signup);
