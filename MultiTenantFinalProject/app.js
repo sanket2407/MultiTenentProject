@@ -60,7 +60,7 @@ app.use(
 );
 
 //user crud and index
-app.get('/', routes.index);
+app.get('/', login.login);
 app.get('/login', login.login);
 app.get('/signup', signup.signup);
 app.post('/users/signup',users.signup);
@@ -70,7 +70,7 @@ app.post('/users/edit_save/:userid',users.edit_save);
 app.post('/users/delete/:email',users.delete_user);
 app.get('/home', home.showDashboard);
 app.post('/createProject', home.createProject);
-
+app.get('/logout', users.logout);
 //project
 app.get('/projects/:userid',project.list);
 app.get('/projects/edit/:userid/:projectid',project.edit);

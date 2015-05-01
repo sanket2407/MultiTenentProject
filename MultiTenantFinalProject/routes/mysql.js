@@ -1,16 +1,18 @@
 var ejs= require('ejs');
 var mysql = require('mysql');
 
+
 function getConnection(){
 	var connection = mysql.createConnection({
 	    host     : 'localhost',
 	    user     : 'root',
-	    password : 'admin',
-	    database : 'ebay',
+	    password : 'welcome1',
+	    database : 'cmpe281',
 	    multipleStatements: true
 	});
 	return connection;
 }
+
 
 
 function fetchData(callback,sqlQuery){

@@ -1,4 +1,5 @@
 var mysql = require('./mysql');
+var MongoClient = require('mongodb').MongoClient;
 
 exports.showDashboard = function(req, res) {
 
@@ -7,10 +8,12 @@ exports.showDashboard = function(req, res) {
 	if (loggedInUser == null) {
 		res.redirect("/login");
 	} else {
-		res.render('home', {
-			title : 'Welcome',
-			error : ""
-		});
+		/*res.render('home', {
+						title : 'Welcome',
+						error : ""
+					});
+		 //*/
+		res.redirect('/projects/'+loggedInUser);
 	}
 
 };
@@ -27,8 +30,8 @@ exports.createProject = function(req, res) {
 		
 		var projectName = req.body.projectName;
 		var projectDesc = req.body.projectDesc;
-		var startDate = req.body.startDate;
-		var endDate = req.body.endDate;
+		var startDate = new Date(req.body.startDate);
+		var endDate =  new Date(req.body.endDate);
 		var projectType = req.body.projectType;
 		var projectTypeInt;
 		
@@ -53,10 +56,26 @@ exports.createProject = function(req, res) {
 			if (err2) {
 				throw err2;
 			} else {
-				res.send("OK");
+				//Insert data to MongoDB
+				
+				var data = { "_id": result.insertId};
+				
+				MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err1, db) {
+					if(!err1) {
+						
+						db.collection('projectDetails').insert(data, function(err, records) {
+							if(!err) {
+								res.send("OK");
+							} else {
+								throw err;
+							}
+						});
+					} else {
+						throw err1;
+					}
+				});			
 			}
 		}, createUser);
-
 	} 
 };
 

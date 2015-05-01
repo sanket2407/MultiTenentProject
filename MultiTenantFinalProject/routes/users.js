@@ -24,7 +24,9 @@ exports.loginAuthentication = function(req, res){
             	{
             	if(rows[0].password === input.password)
             		{
-                 res.render('landing',{page_title:"Customers - Node.js",data:rows});
+
+            	 req.session.user = rows[0].userid;
+                 res.redirect('/projects/'+rows[0].userid);
             		}
             	else
             		{
@@ -145,6 +147,18 @@ exports.delete_user = function(req,res){
         });
         
      });
+};
+
+
+
+exports.logout = function(req,res){
+    
+	req.session.user = null;
+	
+	res.redirect("/login");  
+   
+   
+    
 };
 
 
