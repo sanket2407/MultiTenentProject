@@ -33,7 +33,7 @@ exports.list = function(req, res) {
 					data : "error in fetching data"
 				});
 			} else if (rows.length === 0) {
-				res.render('projectlist', {
+				res.render('projectlist1', {
 					error : "",
 					data : rows
 				});

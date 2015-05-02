@@ -12,11 +12,27 @@ exports.showDashboard = function(req, res) {
 						title : 'Welcome',
 						error : ""
 					});
-		 //*/
+		 */
 		res.redirect('/projects/'+loggedInUser);
+		
 	}
 
 };
+
+
+exports.addProject = function(req, res) {
+
+	var loggedInUser = req.session.user;
+
+	if (loggedInUser == null) {
+		res.redirect("/login");
+	} else {
+	
+		res.render('addProject', { title: 'Express' });
+	}
+
+};
+
 
 exports.createProject = function(req, res) {
 

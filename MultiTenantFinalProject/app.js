@@ -16,7 +16,7 @@ var users = require('./routes/users');
 var signup = require('./routes/signup');
 var login = require('./routes/login');
 var home = require('./routes/home');
-
+var index = require('./routes/index');
 //load project routes
 var project = require('./routes/project');
 
@@ -74,6 +74,7 @@ app.get('/logout', users.logout);
 //project
 app.get('/projects/:userid',project.list);
 app.get('/projects/edit/:userid/:projectid',project.edit);
+app.get('/addProject',home.addProject);
 
 app.use(app.router);
 
