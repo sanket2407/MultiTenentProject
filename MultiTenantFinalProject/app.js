@@ -9,14 +9,18 @@ var http = require('http');
 var path = require('path');
 var app = express();
 var connection  = require('express-myconnection'); 
-var mysql = require('mysql');
+var mysql = require('mysql'),
+  index=require('./routes/index'),
+  kanban=require('./routes/kanban'),
+  waterfall=require('./routes/waterfall');
+  
 
 //load customers routes
 var users = require('./routes/users');  
 var signup = require('./routes/signup');
 var login = require('./routes/login');
 var home = require('./routes/home');
-var index = require('./routes/index');
+
 //load project routes
 var project = require('./routes/project');
 
@@ -34,7 +38,24 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function (req, res, next) {
 
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://10.189.177.48:8080');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
 // development only
 if ('development' === app.get('env')) {
   app.use(express.errorHandler());
@@ -75,6 +96,26 @@ app.get('/logout', users.logout);
 app.get('/projects/:userid',project.list);
 app.get('/projects/edit/:userid/:projectid',project.edit);
 app.get('/addProject',home.addProject);
+
+
+
+
+
+app.get('/scrum', index.getSprintDetails);
+app.get('/users', user.list);
+app.get('/sprint',routes.getSprintData);
+app.get('/kanban',kanban.getCardDara);
+app.get('/waterfall',waterfall.getTaskData);
+
+app.post('/scrum/newSprint',routes.newSprint);
+app.post('/scrum/updateSprint',routes.updateSprint);
+
+app.post('/kanban/newKanban',kanban.newKanban);
+app.post('/kanban/updateKanban',kanban.updateKanban);
+
+app.post('/waterfall/newTask',waterfall.newTask);
+app.post('/waterfall/updateTask',waterfall.updateTask);
+
 
 app.use(app.router);
 
