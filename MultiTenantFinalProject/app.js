@@ -12,6 +12,7 @@ var connection  = require('express-myconnection');
 var mysql = require('mysql'),
   index=require('./routes/index'),
   kanban=require('./routes/kanban'),
+  user = require('./routes/user'),
   waterfall=require('./routes/waterfall');
   
 
