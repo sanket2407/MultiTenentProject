@@ -73,7 +73,7 @@ app.use(
         
      host: 'localhost',
         user: 'root',
-        password : 'welcome1',
+        password : 'root',
         port : 3306, //port mysql
         database:'cmpe281'
 
@@ -99,14 +99,11 @@ app.get('/projects/edit/:userid/:projectid',project.edit);
 app.get('/addProject',home.addProject);
 
 
-
-
-
-app.get('/scrum', index.getSprintDetails);
+app.get('/scrum/:projectid', index.getSprintDetails);
 app.get('/users', user.list);
 app.get('/sprint',routes.getSprintData);
-app.get('/kanban',kanban.getCardDara);
-app.get('/waterfall',waterfall.getTaskData);
+app.get('/kanban/:projectid',kanban.getCardDara);
+app.get('/waterfall/:projectid',waterfall.getTaskData);
 
 app.post('/scrum/newSprint',routes.newSprint);
 app.post('/scrum/updateSprint',routes.updateSprint);

@@ -37,7 +37,7 @@ exports.getSprintDetails=function(req,res){
 			
 			console.log(sprintFields);
 			console.log(backlogFields);
-			var pid=6;
+			var pid = parseInt(req.params.projectid);
 			MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err, db) {
 				if(!err) {
 					db.collection('projectDetails').find({ _id: pid }).toArray(function(err, docs) {
@@ -49,8 +49,8 @@ exports.getSprintDetails=function(req,res){
 							res.send(404);
 						} else {
 							console.log("@@@@@@@");
-							console.log(docs[0].sprint);
-							var sprintData=JSON.stringify(docs[0].sprint);
+							console.log(docs[0].details);
+							var sprintData=JSON.stringify(docs[0].details);
 							console.log(sprintData);
 		            		//console.log('data got... -> '+JSON.stringify(docs).sprint);
 		            		//sprintData=JSON.stringify(docs.sprint);

@@ -36,7 +36,7 @@
   <%for(var i=0; i<data.length; i++)
   {   %>
     console.log(<%=data[i].userid%>);
-    str += '<tr><td><a href="/projects/edit/<%=data[i].userid%>/<%=data[i].project_id%>"><%=data[i].project_id%></td><td><%=data[i].project_name%></td><td><%=data[i].project_description%></td><td><%=data[i].model_name%></td><td><%=data[i].start_date%></td><td><%=data[i].end_date%></td></tr>';
+    str += '<tr><td><a href="/projects/edit/<%=data[i].userid%>/<%=data[i].project_id%>"><%=data[i].project_id%></a></td><td><a href="/projects/edit/<%=data[i].userid%>/<%=data[i].project_id%>"><%=data[i].project_name%></td></a><td><a href="/projects/edit/<%=data[i].userid%>/<%=data[i].project_id%>"><%=data[i].project_description%></td></a><td><a href="/projects/edit/<%=data[i].userid%>/<%=data[i].project_id%>"><%=data[i].model_name%></td></a><td><a href="/projects/edit/<%=data[i].userid%>/<%=data[i].project_id%>"><%=data[i].start_date%></td></a><td><a href="/projects/edit/<%=data[i].userid%>/<%=data[i].project_id%>"><%=data[i].end_date%></td></a></tr>';
     <%
   }%>
   str += "</tbody></table>";
@@ -263,16 +263,10 @@ $('#startDate').datepicker({
 
 <div class="navbar navbar-fixed-bottom">
   <div class="container">
-    <h5>Â© CMPE 281 Team 8 (Spring - 2015)</h5>
+    <h5>© CMPE 281 Team 8 (Spring - 2015)</h5>
   </div>
 
 </div>
-
-
-
-
-
-
 
 
 </body>

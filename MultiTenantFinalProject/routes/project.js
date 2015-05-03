@@ -5,7 +5,7 @@ function getConnection() {
 	var connection = mysql.createConnection({
 		host : 'localhost',
 		user : 'root',
-		password : 'welcome1',
+		password : 'root',
 		database : 'cmpe281',
 		multipleStatements : true
 	});
@@ -28,7 +28,7 @@ exports.list = function(req, res) {
 		connection.query(sqlQuery, function(err, rows, fields) {
 			if (err) {
 				console.log("Error Selecting : %s", err);
-				res.render('projectlist', {
+				res.render('projectlist1', {
 					error : "",
 					data : "error in fetching data"
 				});
@@ -52,17 +52,40 @@ exports.edit = function(req, res) {
 	
 	var loggedInUser = req.session.user;
 
-	if (loggedInUser == null) {
+	if (loggedInUser === null) {
 		res.redirect("/login");
-	} else {
-	
+	} else 
+	{
 	
 	var userid = req.params.userid;
 	var projectid = req.params.projectid;
-	res.render('editproject', {
-		error : "",
-		userid : userid,
-		projectid : projectid
+
+	var connection = getConnection();
+	var sqlQuery = "select project_type from project_master where userid='"+userid+"' and project_id='"+projectid+"'";
+			
+	connection.query(sqlQuery, function(err, rows, fields) {
+		if (err) {
+			console.log("Error Selecting : %s", err);
+			res.render('editproject', {
+				error : "",
+				data : "error in fetching data"
+			});
+		} else {
+			if(rows[0].project_type === 1){
+				console.log("came at scrum");
+				res.redirect('/scrum/'+projectid);
+			}
+			else if(rows[0].project_type === 1){
+				res.redirect('/kanban/'+projectid);
+			}
+			else if(rows[0].project_type === 1){
+				res.redirect('/waterfall/'+projectid);
+			}else{
+				res.render('error', {
+					error : "No model type available"
+				});
+			}
+		}
 	});
-	}
+}
 };

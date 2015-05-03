@@ -20,7 +20,38 @@ exports.getCardDara=function(req,res){
 				for(i=0;i<results.length;i++){
 					fields.push(results[i].field_name);
 				}
-				res.render('kanban',{sprintFields:fields});
+				var pid=parseInt(req.params.projectid);
+				MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err, db) {
+					if(!err) {
+						db.collection('projectDetails').find({ _id: pid }).toArray(function(err, docs) {
+							if (err) { 
+								console.log(err.message);
+								res.send(500, err.message);
+							} else if(docs.length <= 0) {
+								console.log("Error 404: Project Details not Found...");
+								res.send(404);
+							} else {
+								console.log("@@@@@@@");
+								console.log(docs[0].details);
+								var sprintData=JSON.stringify(docs[0].details);
+								console.log(sprintData);
+			            		//console.log('data got... -> '+JSON.stringify(docs).sprint);
+			            		//sprintData=JSON.stringify(docs.sprint);
+								res.render('kanban',{sprintFields:fields,sprintsData:sprintData});
+			            		//  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData});
+			            		//res.send(docs);
+			          			/*if(docs != null) {
+			          				res.send(docs);
+			          			} else {
+			          				console.log("No Project Details found");
+			          			}*/
+			            	}
+			      		});
+					} else {
+						console.log("Error in Connection");
+					}
+				});
+				
 				
 			}
 	},sql);

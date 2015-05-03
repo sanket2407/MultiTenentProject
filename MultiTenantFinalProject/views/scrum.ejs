@@ -19,7 +19,7 @@
     <script type="text/javascript" src="/jqwidgets/jqxdropdownlist.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="/scripts/demos.js"></script>
-    <script type="text/javascript" src="generatedata.js"></script>
+   
     <script type="text/javascript">
         $(document).ready(function () {
 		var temp=[];
@@ -105,7 +105,7 @@
             // initialize jqxGrid
             $("#jqxgrid").jqxGrid(
             {
-                width: 850,
+                width: 220*<%=sprintFields.length%>,
                 source: dataAdapter,
                 pageable: true,
                 autoheight: true,
