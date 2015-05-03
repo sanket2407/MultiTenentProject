@@ -32,6 +32,14 @@
         $(document).ready(function () {
             // prepare the data
 			var temp=[];
+			var dataSprints;
+		if(typeof sprintsData === "undefined"){
+		dataSprints =[];
+		}
+		else{
+				dataSprints ='<%- (sprintsData) %>';
+		}
+		
 			<%
 				for(i=0;i<sprintFields.length;i++){
 				%>
@@ -53,7 +61,7 @@
       };
 	  */
            // var data = generatedata(200);
-			var dataSprints ='<%- (sprintsData) %>';//'{"SprintId":"one","SprintNo":"two","SprintDescription":"three"}';
+			//var dataSprints ='<%- (sprintsData) %>';//'{"SprintId":"one","SprintNo":"two","SprintDescription":"three"}';
 			var dataStories='{"StoryTitle":"one","StartDate":"two","EndDate":"three","AssignedTo":"three","StoryDescription":"three"}';
             /*var source =
             {

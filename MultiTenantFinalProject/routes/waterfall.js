@@ -23,7 +23,7 @@ exports.getTaskData=function(req,res){
 				MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err, db) {
 					if(!err) {
 						db.collection('projectDetails').find({ _id: pid }).toArray(function(err, docs) {
-							if (err) { 
+					/*		if (err) { 
 								console.log(err.message);
 								res.send(500, err.message);
 							} else if(docs.length <= 0) {
@@ -34,18 +34,27 @@ exports.getTaskData=function(req,res){
 								console.log(docs[0].details);
 								var sprintData=JSON.stringify(docs[0].details);
 								console.log(sprintData);
-			            		//console.log('data got... -> '+JSON.stringify(docs).sprint);
-			            		//sprintData=JSON.stringify(docs.sprint);
-								//res.render('kanban',{sprintFields:fields,sprintsData:sprintData});
 								res.render('waterfall',{sprintFields:fields,sprintsData:sprintData})
-			            		//  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData});
-			            		//res.send(docs);
-			          			/*if(docs != null) {
-			          				res.send(docs);
-			          			} else {
-			          				console.log("No Project Details found");
-			          			}*/
+			            	
 			            	}
+							*/
+							var sprintData;
+							if (err) { 
+								console.log(err.message);
+								res.send(500, err.message);
+							} else if(docs.length <= 0) {
+								console.log("Error 404: Project Details not Found...");
+								sprintData=[];
+								//res.send(404);
+							} else {
+								console.log("@@@@@@@");
+								console.log(docs[0].details);
+								sprintData=JSON.stringify(docs[0].details);
+								console.log(sprintData);
+							}
+			            		  console.log(sprintData);
+			            		  res.render('waterfall',{sprintFields:fields,sprintsData:sprintData});
+			            		  
 			      		});
 					} else {
 						console.log("Error in Connection");
