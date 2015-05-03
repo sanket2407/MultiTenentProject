@@ -5,8 +5,8 @@ var mysql=require('./mysql');
 var MongoClient = require('mongodb').MongoClient;
 
 exports.getCardDara=function(req,res){
-	
-	var projectId=1;
+		
+	var projectId = parseInt(req.params.projectid);
 	var sql="select field_name from model_fields_master where model_type=2";
 	mysql.fetchData(function(err,results){
 		
