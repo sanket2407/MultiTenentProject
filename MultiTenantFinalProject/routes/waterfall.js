@@ -6,10 +6,9 @@ var MongoClient = require('mongodb').MongoClient;
 
 exports.getTaskData=function(req,res){
 	
-	var projectId=1;
+	var projectId = parseInt(req.params.projectid);
 	var sql="select field_name from model_fields_master where model_type=3";
 	mysql.fetchData(function(err,results){
-		
 		if(err)
 			throw err;
 		else

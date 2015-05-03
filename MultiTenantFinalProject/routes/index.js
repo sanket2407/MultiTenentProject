@@ -6,13 +6,14 @@ var mysql=require('./mysql');
 var http = require('http');
 var MongoClient = require('mongodb').MongoClient;
 
-
 exports.index = function(req, res){
   res.render('scrum', { title: 'Express' });
 };
 
 exports.getSprintDetails=function(req,res){
 	var sql="select field_name,parent_field  from model_fields_master where model_type=1;";
+	
+	var pid = parseInt(req.params.projectid);
 	mysql.fetchData(function(err,results){
 		
 		if(err)
@@ -21,7 +22,7 @@ exports.getSprintDetails=function(req,res){
 			}
 		else
 			{
-			console.log(results);
+			
 			var sprintFields=[];
 			var backlogFields=[];
 			//var i=0;
@@ -34,12 +35,11 @@ exports.getSprintDetails=function(req,res){
 					backlogFields.push(results[i].field_name)
 				}
 			}
-			
-			console.log(sprintFields);
-			console.log(backlogFields);
-			var pid=6;
+
 			MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err, db) {
 				if(!err) {
+					console.log("#####");
+					console.log(pid);
 					db.collection('projectDetails').find({ _id: pid }).toArray(function(err, docs) {
 						if (err) { 
 							console.log(err.message);
@@ -49,8 +49,8 @@ exports.getSprintDetails=function(req,res){
 							res.send(404);
 						} else {
 							console.log("@@@@@@@");
-							console.log(docs[0].sprint);
-							var sprintData=JSON.stringify(docs[0].sprint);
+							console.log(docs[0].details);
+							var sprintData=JSON.stringify(docs[0].details);
 							console.log(sprintData);
 		            		//console.log('data got... -> '+JSON.stringify(docs).sprint);
 		            		//sprintData=JSON.stringify(docs.sprint);
@@ -66,32 +66,7 @@ exports.getSprintDetails=function(req,res){
 				} else {
 					console.log("Error in Connection");
 				}
-			});
-
-			
-	      
-		/*	var options = {
-					  host: 'http://10.189.177.48',
-					  port:8080,
-					  path: 'multitenantSaasProject/projectDetails'
-					};
-			var request = http.get(options, function (response) {
-			    var data = '';
-			    response.on('data', function (chunk) {
-			        data += chunk;
-			    });
-			    response.on('end', function () {
-			    	console.log('from varun');
-			        console.log(data);
-			
-			    });
-			});
-			request.on('error', function (e) {
-			    console.log(e.message);
-			    
-			});*/
-			//request.end();
-			
+			});		
 			
 			}
 	},sql);

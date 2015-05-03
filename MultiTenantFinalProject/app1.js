@@ -14,7 +14,6 @@ var mysql = require('mysql'),
   kanban=require('./routes/kanban'),
   user = require('./routes/user'),
   waterfall=require('./routes/waterfall');
-  
 
 //load customers routes
 var users = require('./routes/users');  
@@ -39,6 +38,7 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -57,6 +57,7 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+
 // development only
 if ('development' === app.get('env')) {
   app.use(express.errorHandler());
@@ -68,18 +69,18 @@ if ('development' === app.get('env')) {
 -------------------------------------------*/
 
 app.use(
-    
-    connection(mysql,{
-        
-     host: 'localhost',
-        user: 'root',
-        password : 'root',
-        port : 3306, //port mysql
-        database:'cmpe281'
+	    
+	    connection(mysql,{
+	        
+	     host: 'localhost',
+	        user: 'root',
+	        password : 'welcome1',
+	        port : 3306, //port mysql
+	        database:'cmpe281'
 
-    },'pool') //or single
+	    },'pool') //or single
 
-);
+	);
 
 //user crud and index
 app.get('/', login.login);
@@ -93,27 +94,11 @@ app.post('/users/delete/:email',users.delete_user);
 app.get('/home', home.showDashboard);
 app.post('/createProject', home.createProject);
 app.get('/logout', users.logout);
+
 //project
 app.get('/projects/:userid',project.list);
 app.get('/projects/edit/:userid/:projectid',project.edit);
-app.get('/addProject',home.addProject);
-
-
-app.get('/scrum/:projectid', index.getSprintDetails);
-app.get('/users', user.list);
-app.get('/sprint',routes.getSprintData);
-app.get('/kanban/:projectid',kanban.getCardDara);
-app.get('/waterfall/:projectid',waterfall.getTaskData);
-
-app.post('/scrum/newSprint',routes.newSprint);
-app.post('/scrum/updateSprint',routes.updateSprint);
-
-app.post('/kanban/newKanban',kanban.newKanban);
-app.post('/kanban/updateKanban',kanban.updateKanban);
-
-app.post('/waterfall/newTask',waterfall.newTask);
-app.post('/waterfall/updateTask',waterfall.updateTask);
-
+app.get('/report',project.map);
 
 app.use(app.router);
 

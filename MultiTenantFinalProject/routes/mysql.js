@@ -6,7 +6,7 @@ function getConnection(){
 	var connection = mysql.createConnection({
 	    host     : 'localhost',
 	    user     : 'root',
-	    password : 'welcome1',
+	    password : 'root',
 	    database : 'cmpe281',
 	    multipleStatements: true
 	});

@@ -5,7 +5,7 @@ function getConnection() {
 	var connection = mysql.createConnection({
 		host : 'localhost',
 		user : 'root',
-		password : 'welcome1',
+		password : 'root',
 		database : 'cmpe281',
 		multipleStatements : true
 	});
@@ -38,7 +38,6 @@ exports.list = function(req, res) {
 					data : rows
 				});
 			} else {
-				console.log(rows);
 				res.render('projectlist1', {
 					error : "",
 					data : rows
@@ -52,17 +51,74 @@ exports.edit = function(req, res) {
 	
 	var loggedInUser = req.session.user;
 
-	if (loggedInUser == null) {
+	if (loggedInUser === null) {
 		res.redirect("/login");
-	} else {
-	
+	} else 
+	{
 	
 	var userid = req.params.userid;
 	var projectid = req.params.projectid;
-	res.render('editproject', {
-		error : "",
-		userid : userid,
-		projectid : projectid
+
+	var connection = getConnection();
+	var sqlQuery = "select project_type from project_master where userid='"+userid+"' and project_id='"+projectid+"'";
+			
+	connection.query(sqlQuery, function(err, rows, fields) {
+		if (err) {
+			console.log("Error Selecting : %s", err);
+			res.render('editproject', {
+				error : "",
+				data : "error in fetching data"
+			});
+		} else {
+			if(rows[0].project_type === 1){
+				console.log("came at scrum");
+				res.redirect('/scrum/'+projectid);
+			}
+			else if(rows[0].project_type === 1){
+				res.redirect('/kanban/'+projectid);
+			}
+			else if(rows[0].project_type === 1){
+				res.redirect('/waterfall/'+projectid);
+			}else{
+				res.render('error', {
+					error : "No model type available"
+				});
+			}
+		}
 	});
+}
+};
+
+exports.map = function(req, res) {
+	
+	var loggedInUser = req.session.user;
+	console.log(loggedInUser);
+	if (loggedInUser === null) {
+		res.redirect("/login");
+	} else {
+	
+		console.log(loggedInUser);
+		var connection = getConnection();
+		console.log("before calling query");
+		var sqlQuery = "select p1.project_id, p1.project_name, p1.project_description, p2.model_name, p1.userid, p1.start_date, p1.end_date from project_master p1 join project_models p2 on p2.model_id = p1.project_type where userid = '"+loggedInUser+"' ";
+		connection.query(sqlQuery, function(err, rows, fields) {
+			if (err) {
+				console.log("Error Selecting : %s", err);
+				res.render('projectlist', {
+					error : "",
+					data : "error in fetching data"
+				});
+			} else if (rows.length === 0) {
+				console.log(rows);
+				res.render('report', {
+					error : "",
+					data : rows
+				});
+			} else {
+				console.log(rows);
+				res.render('report', {error : "",data : rows});
+			}
+		});
+		
 	}
 };
