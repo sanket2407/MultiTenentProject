@@ -1,0 +1,178 @@
+
+/*
+ * GET home page.
+ */
+var mysql=require('./mysql');
+var http = require('http');
+var MongoClient = require('mongodb').MongoClient;
+
+
+exports.index = function(req, res){
+  res.render('scrum', { title: 'Express' });
+};
+
+exports.getSprintDetails=function(req,res){
+	var sql="select field_name,parent_field  from model_fields_master where model_type=1;";
+	mysql.fetchData(function(err,results){
+		
+		if(err)
+			{
+			throw err;
+			}
+		else
+			{
+			console.log(results);
+			var sprintFields=[];
+			var backlogFields=[];
+			//var i=0;
+			for(var i=0;i<results.length;i++){
+				console.log(results[i].parent_field);
+				if(results[i].parent_field=="sprint"){
+					sprintFields.push(results[i].field_name);
+				}
+				else if(results[i].parent_field=="story"){
+					backlogFields.push(results[i].field_name)
+				}
+			}
+			
+			console.log(sprintFields);
+			console.log(backlogFields);
+			var pid=6;
+			MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err, db) {
+				if(!err) {
+					db.collection('projectDetails').find({ _id: pid }).toArray(function(err, docs) {
+						if (err) { 
+							console.log(err.message);
+							res.send(500, err.message);
+						} else if(docs.length <= 0) {
+							console.log("Error 404: Project Details not Found...");
+							res.send(404);
+						} else {
+							console.log("@@@@@@@");
+							console.log(docs[0].sprint);
+							var sprintData=JSON.stringify(docs[0].sprint);
+							console.log(sprintData);
+		            		//console.log('data got... -> '+JSON.stringify(docs).sprint);
+		            		//sprintData=JSON.stringify(docs.sprint);
+		            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData});
+		            		//res.send(docs);
+		          			/*if(docs != null) {
+		          				res.send(docs);
+		          			} else {
+		          				console.log("No Project Details found");
+		          			}*/
+		            	}
+		      		});
+				} else {
+					console.log("Error in Connection");
+				}
+			});
+
+			
+	      
+		/*	var options = {
+					  host: 'http://10.189.177.48',
+					  port:8080,
+					  path: 'multitenantSaasProject/projectDetails'
+					};
+			var request = http.get(options, function (response) {
+			    var data = '';
+			    response.on('data', function (chunk) {
+			        data += chunk;
+			    });
+			    response.on('end', function () {
+			    	console.log('from varun');
+			        console.log(data);
+			
+			    });
+			});
+			request.on('error', function (e) {
+			    console.log(e.message);
+			    
+			});*/
+			//request.end();
+			
+			
+			}
+	},sql);
+	
+
+};
+
+exports.getSprintData=function(req,res){
+	//mongo code to get sprint data
+	//var data='{sprintData:[	{		"Sprint Id":"1";"Sprint No":"2";"Sprint Description":"testing data"	}]}';
+	//res.send(JSON.parse(data));
+};
+
+exports.newSprint=function(req,res){
+	console.log('here');
+	console.log("SCRUM: In Add Function...");
+    var data = '';
+	req.addListener('data', function(chunk) {
+		data += chunk;
+	});
+
+	var datagot='';
+	console.log(data);
+	req.addListener('end', function() {
+	   datagot = JSON.parse(data);
+	   console.log('SCRUM: data got -> '+datagot);
+
+		MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err_connection, db) {
+			if(!err_connection) {
+				console.log("SCRUM: Connected to Mongolab");
+				db.collection('projectDetails').update({ _id: 6}, { $push: { sprint: datagot } }, function(err_insertion, records) {
+					if(!err_insertion) {
+						console.log("SCRUM: Sprint Inserted Successfully...");
+						res.writeHead(200, {'content-type': 'text/plain'});
+						res.send();
+					} else {
+						console.log("SCRUM: Some Error inserting..."+err_insertion);
+						res.send(err_insertion);
+					}
+				});
+			} else {
+				console.log("SCRUM: Error in Connection..."+err_connection);
+				res.send(err_connection);
+			}
+		});
+	});
+}
+
+exports.updateSprint=function(req,res){
+	console.log("SCRUM: In Update Function...");
+
+    var data = '';
+	req.addListener('data', function(chunk) {
+		data += chunk;
+	});
+
+	var datagot='';
+	console.log(data);
+	req.addListener('end', function() {
+	   datagot = JSON.parse(data);
+	   console.log('SCRUM: data got -> '+datagot.SprintId +datagot.SprintNo +datagot.SprintDescription);
+
+		MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err_connection, db) {
+			if(!err_connection) {
+				console.log("SCRUM: Connected to Mongolab");
+				db.collection('projectDetails').update({ _id: 6, "sprint.SprintId" : datagot.SprintId}, 
+					{ $set: { "sprint.$.SprintNo" : datagot.SprintNo, 
+								"sprint.$.SprintDescription" : datagot.SprintDescription } }, function(err_updation, records) {
+					if(!err_updation) {
+						console.log("SCRUM: Sprint Updated Successfully...");
+						res.writeHead(200, {'content-type': 'text/plain'});
+						res.send();
+					} else {
+						console.log("SCRUM: Some Error updating..."+err_updation);
+						res.send(err_updation);
+					}
+				});
+			} else {
+				console.log("SCRUM: Error in Connection..."+err_connection);
+				res.send(err_connection);
+			}
+		});
+	});
+}

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title id='Description'>In order to enter in edit mode, click any of the 'Edit' buttons. To save the changes, click the 'Save' button in the popup dialog. To cancel the changes
+    click the 'Cancel' button in the popup dialog.</title>
+    <link rel="stylesheet" href="/jqwidgets/styles/jqx.base.css" type="text/css" />
+    <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxdata.js"></script> 
+    <script type="text/javascript" src="/jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxmenu.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.selection.js"></script> 
+    <script type="text/javascript" src="/jqwidgets/jqxnumberinput.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxwindow.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxinput.js"></script>
+    <script type="text/javascript" src="/scripts/demos.js"></script>
+    <script type="text/javascript" src="generatedata.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+		var temp=[];
+			<%
+				for(i=0;i<sprintFields.length;i++){
+				%>
+					
+					var obj = {name: '<%=sprintFields[i]%>', type: '<%=sprintFields[i]%>'};
+					temp.push(obj);
+				<% }%>
+		//var str1 = '<%=sprintsData%>';
+		//str1.replace('"','&#34');
+	//	console.log('<%- (sprintsData) %>');
+		
+	
+            // prepare the data
+			
+	/*		 var source =
+      {
+          datatype: "json",
+          datafields: [
+              { name: 'subcategoryid', type: 'number' },
+              { name: 'name', type: 'string' },
+              { name: 'description', type: 'string' }
+          ],
+          id: 'id',
+          url: url
+      };
+	  */	
+		//console.log('<%=sprintsData%>');
+            var data = generatedata(200);
+			//var dataSprints = '<%=sprintsData%>';
+			//var obj = {<%=sprintsData%>};
+			var dataSprints ='<%- (sprintsData) %>';// '[{"SprintId":"one","SprintNo":"two","SprintDescription":"three"}]';
+			var dataStories='{"StoryTitle":"one","StartDate":"two","EndDate":"three","AssignedTo":"three","StoryDescription":"three"}';
+            /*var source =
+            {
+                localdata: data,
+                datatype: "array",
+                datafields:
+                [
+                    { name: 'firstname', type: 'string' },
+                    { name: 'lastname', type: 'string' },
+                    { name: 'productname', type: 'string' },
+                    { name: 'quantity', type: 'number' },
+                    { name: 'price', type: 'number' }
+                ],
+                updaterow: function (rowid, rowdata, commit) {
+                    // synchronize with the server - send update command
+                    // call commit with parameter true if the synchronization with the server is successful 
+                    // and with parameter false if the synchronization failder.
+                    commit(true);
+                }
+            };  */
+			 var url = "/getSprintData?projectid=1";
+			 var source =
+      {
+          datatype: "json",
+		  localdata:dataSprints,
+          datafields: temp,
+          id: 'id',
+          //url: url
+      };
+		
+			 var sourceStories =
+            {
+               localdata: dataStories,
+                datatype: "json",
+                datafields:
+                [
+                    { name: 'StoryTitle', type: 'string' },
+                    { name: 'StoryDescription', type: 'string' },
+                    { name: 'StartDate', type: 'string' },
+                    { name: 'EndDate', type: 'string' },
+                    { name: 'AssignedTo', type: 'string' }
+                ]
+            
+            };
+			
+	
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            var editrow = -1;
+            // initialize jqxGrid
+            $("#jqxgrid").jqxGrid(
+            {
+                width: 850,
+                source: dataAdapter,
+                pageable: true,
+                autoheight: true,
+                columns: [
+				<%
+				for(i=0;i<sprintFields.length;i++){
+				%>
+					{ text: '<%=sprintFields[i]%>',datafield: '<%=sprintFields[i]%>', width: 200 },
+				<% }%>
+       
+                  { text: 'Edit', datafield: 'Edit', columntype: 'button', width: 100, cellsrenderer: function () {
+                     return "Edit";
+                  }, buttonclick: function (row) {
+                     // open the popup window when the user clicks a button.
+                     editrow = row;
+                     var offset = $("#jqxgrid").offset();
+                     $("#popupWindow").jqxWindow({ position: { x: parseInt(offset.left) + 60, y: parseInt(offset.top) + 60 } });
+                     // get the clicked row's data and initialize the input fields.
+                     var dataRecord = $("#jqxgrid").jqxGrid('getrowdata', editrow);
+					 	<%
+				for(i=0;i<sprintFields.length;i++){
+				%>
+					
+					 $("#<%=sprintFields[i]%>").val(dataRecord.<%=sprintFields[i]%>);
+				<% }%>
+                    
+                     // show the popup window.
+					  $("#SprintId").prop("readonly", true);
+					  $('#Save').css('display', 'inline');
+					  $('#AddSprintData').css('display', 'none');
+                     $("#popupWindow").jqxWindow('open');
+                 }
+                 },
+				       { text: 'Manage Stories', datafield: '', columntype: 'button', width: 150, cellsrenderer: function () {
+                     return "ManageStories";
+                  }, buttonclick: function (row) {
+						// row is id or row
+                     // open the popup window when the user clicks a button.
+						
+                 }}
+                ]
+            });
+			 var dataAdapterStories = new $.jqx.dataAdapter(sourceStories);
+            var editrow = -1;
+			$("#jqxgridStories").jqxGrid(
+            {
+                width: <%=backlogFields.length%>*220,
+                source: dataAdapterStories,
+                pageable: true,
+                autoheight: true,
+                columns: [
+				<%
+				for(i=0;i<backlogFields.length;i++){
+				%>
+					{ text: '<%=backlogFields[i]%>',datafield: '<%=backlogFields[i]%>', width: 200 },
+				<% }%>
+       
+                  { text: 'Edit', datafield: 'Edit', columntype: 'button', width: 100, cellsrenderer: function () {
+                     return "Edit";
+                  }, buttonclick: function (row) {
+                     // open the popup window when the user clicks a button.
+                     editrow = row;
+                     var offset = $("#jqxgridStories").offset();
+                     $("#popupWindowStories").jqxWindow({ position: { x: parseInt(offset.left) + 60, y: parseInt(offset.top) + 60 } });
+                     // get the clicked row's data and initialize the input fields.
+                     var dataRecord = $("#jqxgridStories").jqxGrid('getrowdata', editrow);
+					 	<%
+				for(i=0;i<backlogFields.length;i++){
+				%>
+					
+					 $("#<%=backlogFields[i]%>").val(dataRecord.<%=backlogFields[i]%>);
+				<% }%>
+                    
+                     // show the popup window.
+					
+					   $('#AddStoryData').css('display', 'none');
+					  $('#SaveStoryData').css('display', 'inline');
+                     $("#popupWindowStories").jqxWindow('open');
+                 }
+                 },
+				 
+                ]
+            });
+			
+            // initialize the popup window and buttons. SPRINT
+            $("#popupWindow").jqxWindow({
+                width: 350, resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.01           
+            });
+            $("#popupWindow").on('open', function () {
+              //  $("#firstName").jqxInput('selectAll');
+            });
+         
+            $("#Cancel").jqxButton({ theme: theme });
+            $("#Save").jqxButton({ theme: theme });
+			$("#AddSprintData").jqxButton({theme:theme});
+			
+            // update the edited row when the user clicks the 'Save' button.
+			         $("#Save").click(function () {
+                var url;
+                console.log('edit row'+editrow);
+                if (editrow >= 0)
+                   {
+                     console.log('in if');
+                   	
+					var row={
+					
+						 	<%
+								for(i=0;i<sprintFields.length;i++){
+							
+									var temp=sprintFields.length-1;
+									if(i==temp){
+									%>
+												'<%=sprintFields[i]%>':$("#<%=sprintFields[i]%>").val()
+									<%}else	 	{%>
+											'<%=sprintFields[i]%>':$("#<%=sprintFields[i]%>").val(),
+									<%} 
+							}%>
+				}
+                     console.log(row);
+                          		$.ajax('/scrum/updateSprint', {
+                            type: 'POST',
+                            data: JSON.stringify(row),
+                            contentType: 'text/json',
+                            success: function() { console.log('sprint updated success'); },
+                            error  : function() {   alert("Request failed: " ); }
+                        });
+                         var rowID = $('#jqxgrid').jqxGrid('getrowid', editrow);
+
+                     
+                       $('#jqxgrid').jqxGrid('updaterow', rowID, row);
+                       $("#popupWindow").jqxWindow('hide');
+                }
+                
+            });
+			// Add new sprint data
+            $("#AddSprintData").click(function () {
+			
+					var row={
+					
+						 	<%
+								for(i=0;i<sprintFields.length;i++){
+							
+									var temp=sprintFields.length-1;
+									if(i==temp){
+									%>
+												'<%=sprintFields[i]%>':$("#<%=sprintFields[i]%>").val()
+									<%}else	 	{%>
+											'<%=sprintFields[i]%>':$("#<%=sprintFields[i]%>").val(),
+									<%} 
+							}%>
+				}
+				console.log('row data');
+				console.log(row);
+				console.log(JSON.stringify(row));
+							
+									 $.ajax('/scrum/newSprint', {
+                            type: 'POST',
+                            data: JSON.stringify(row),
+                            contentType: 'text/json',
+                            success: function() { console.log('sprint addedd success'); },
+                            error  : function() {   alert("Request failed: " ); }
+                        });
+                   // var rowID = $('#jqxgrid').jqxGrid('getrowid', editrow);
+					var commit = $("#jqxgrid").jqxGrid('addrow', null, row)
+                   // $('#jqxgrid').jqxGrid('updaterow', rowID, row);
+                    $("#popupWindow").jqxWindow('hide');
+                
+            });
+			 $("#addSprint").click(function () {
+					  var offset = $("#jqxgrid").offset();
+					 $("#popupWindow").jqxWindow({ position: { x: parseInt(offset.left) + 60, y: parseInt(offset.top) + 60 } });
+					
+					 $('#Save').css('display', 'none');
+					  $('#AddSprintData').css('display', 'inline');
+					$("#popupWindow").jqxWindow('open');
+            });
+			// Stories part--------------------------------------------
+			 $("#popupWindowStories").jqxWindow({
+                width: 350, resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#CancelStories"), modalOpacity: 0.01           
+            });
+            $("#popupWindowStories").on('open', function () {
+              //  $("#firstName").jqxInput('selectAll');
+            });
+         
+            $("#CancelStories").jqxButton({ theme: theme });
+            $("#SaveStoryData").jqxButton({ theme: theme });
+            // update the edited row when the user clicks the 'Save' button.
+            $("#SaveStoryData").click(function () {
+               
+                /*    var row = { firstname: $("#firstName").val(), lastname: $("#lastName").val(), productname: $("#product").val(),
+                        quantity: parseInt($("#quantity").jqxNumberInput('decimal')), price: parseFloat($("#price").jqxNumberInput('decimal'))
+                    };*/
+					                var url;
+                console.log('edit row'+editrow);
+               
+					var row={					
+						 	<%
+								for(i=0;i<backlogFields.length;i++){
+							
+									var temp=backlogFields.length-1;
+									if(i==temp){
+									%>
+												'<%=backlogFields[i]%>':$("#<%=backlogFields[i]%>").val()
+									<%}else	 	{%>
+											'<%=backlogFields[i]%>':$("#<%=backlogFields[i]%>").val(),
+									<%} 
+							}%>
+				}
+                     console.log(row);
+                    /*      		$.ajax('http://10.189.177.48:8080/multitenantSaasProject/scrum/updateSprint', {
+                            type: 'POST',
+                            data: JSON.stringify(row),
+                            contentType: 'text/json',
+                            success: function() { console.log('sprint updated success'); },
+                            error  : function() {   alert("Request failed: " ); }
+                        });*/
+						
+                    var rowID = $('#jqxgridStories').jqxGrid('getrowid', editrow);
+                    $('#jqxgridStories').jqxGrid('updaterow', rowID, row);
+                    $("#popupWindowStories").jqxWindow('hide');
+                      
+                
+            });
+			
+         
+			 $("#addStory").click(function () {
+		
+					  var offset = $("#jqxgridStories").offset();
+					 $("#popupWindowStories").jqxWindow({ position: { x: parseInt(offset.left) + 60, y: parseInt(offset.top) + 60 } });
+					   $('#AddStoryData').css('display', 'inline');
+					  $('#SaveStoryData').css('display', 'none');
+					$("#popupWindowStories").jqxWindow('open');
+            });
+			           $("#AddStoryData").click(function () {
+			
+					var row={
+					
+						 	<%
+								for(i=0;i<backlogFields.length;i++){
+							
+									var temp=backlogFields.length-1;
+									if(i==temp){
+									%>
+												'<%=backlogFields[i]%>':$("#<%=backlogFields[i]%>").val()
+									<%}else	 	{%>
+											'<%=backlogFields[i]%>':$("#<%=backlogFields[i]%>").val(),
+									<%} 
+							}%>
+				}
+				console.log('row data');
+				console.log(row);
+				//console.log(JSON.stringify(row));
+							
+									 /*$.ajax('http://10.189.177.48:8080/multitenantSaasProject/scrum/newSprint', {
+                            type: 'POST',
+                            data: JSON.stringify(row),
+                            contentType: 'text/json',
+                            success: function() { console.log('sprint addedd success'); },
+                            error  : function() {   alert("Request failed: " ); }
+                        });*/
+                   // var rowID = $('#jqxgrid').jqxGrid('getrowid', editrow);
+					var commit = $("#jqxgridStories").jqxGrid('addrow', null, row)
+                   // $('#jqxgrid').jqxGrid('updaterow', rowID, row);
+                    $("#popupWindowStories").jqxWindow('hide');
+                
+            });
+        });
+    </script>
+</head>
+<body class='default'>
+	<table>
+	
+	<!--<%
+	console.log(sprintFields.length);
+	console.log(sprintFields[0]);
+	for(i=0;i<sprintFields.length;i++){
+	%>
+	<tr><td><%=sprintFields[i]%></td><td><input type="text" name="sprintField<%=i%>" ></input></td></tr>
+	<%}%>-->
+	<br>
+	<br>
+	</table>
+	<input type="submit" id="addSprint" value="Add Sprint"/>
+	<br>
+	<br>
+    <div id='jqxWidget'>
+        <div id="jqxgrid"></div>
+        <div style="margin-top: 30px;">
+            <div id="cellbegineditevent"></div>
+            <div style="margin-top: 10px;" id="cellendeditevent"></div>
+       </div>
+	   <div id="jqxgridStories"></div>
+       <div id="popupWindow">
+            <div>Edit</div>
+            <div style="overflow: hidden;">
+                <table>
+						<%
+					for(i=0;i<sprintFields.length;i++){
+					%>
+						
+						  <tr>
+                        <td align="right"><%=sprintFields[i]%>:</td>
+                        <td align="left"><input id='<%=sprintFields[i]%>' /></td>
+                    </tr>
+					<% }%>
+       
+      
+                    <tr>
+                        <td align="right"></td>
+                        <td style="padding-top: 10px;" align="right">
+						<input style="margin-right: 5px;" type="button" id="Save" value="Save" />
+						<input style="margin-right: 5px;" type="button" id="AddSprintData" value="Add"  />
+						<input id="Cancel" type="button" value="Cancel" />
+						</td>
+                    </tr>
+                </table>
+            </div>
+       </div>
+	   <div>
+	   <input type="submit" id="addStory" value="Add Story"/>
+	   </div>
+	    <div id="popupWindowStories">
+            <div>Edit</div>
+            <div style="overflow: hidden;">
+                <table>
+						<%
+					for(i=0;i<backlogFields.length;i++){
+					%>
+						
+						  <tr>
+                        <td align="right"><%=backlogFields[i]%>:</td>
+                        <td align="left"><input id='<%=backlogFields[i]%>' /></td>
+                    </tr>
+					<% }%>
+       
+      
+                    <tr>
+                        <td align="right"></td>
+                        <td style="padding-top: 10px;" align="right">
+						<input style="margin-right: 5px;" type="button" id="SaveStoryData" value="Save" />
+						<input style="margin-right: 5px;" type="button" id="AddStoryData" value="Add" />
+						<input id="CancelStories" type="button" value="Cancel" /></td>
+                    </tr>
+                </table>
+            </div>
+       </div>
+    </div>
+</body>
+</html>
