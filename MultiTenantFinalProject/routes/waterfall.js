@@ -67,7 +67,7 @@ exports.getTaskData=function(req,res){
 	
 }
 
-exports.newTask=function(req,res){
+/*exports.newTask=function(req,res){
 	
 	console.log("WATERFALL: In Waterfall Add...");
 	var data = '';
@@ -140,4 +140,4 @@ exports.updateTask=function(req,res){
 			}
 		});
 	});
-}
+}*/

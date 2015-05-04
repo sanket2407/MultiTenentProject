@@ -174,7 +174,7 @@
 							}%>
 				}
                      console.log(row);
-                          		$.ajax('/kanban/updateKanban', {
+                        $.ajax('/updateData', {//'/kanban/updateKanban', {
                             type: 'POST',
                             data: JSON.stringify(row),
                             contentType: 'text/json',
@@ -210,7 +210,7 @@
 				console.log(row);
 				console.log(JSON.stringify(row));
 							
-									 $.ajax('/kanban/newKanban', {
+									 $.ajax('/newData', {//'/kanban/newKanban', {
                             type: 'POST',
                             data: JSON.stringify(row),
                             contentType: 'text/json',

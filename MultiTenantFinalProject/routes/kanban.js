@@ -69,7 +69,7 @@ exports.getCardDara=function(req,res){
 	
 }
 
-exports.newKanban=function(req,res){
+/*exports.newKanban=function(req,res){
 	console.log("KANBAN: In Kanban Add...");
 	var data = '';
 	req.addListener('data', function(chunk) {
@@ -139,4 +139,4 @@ exports.updateKanban=function(req,res){
 			}
 		});
 	});
-}
+}*/

@@ -174,7 +174,7 @@
 							}%>
 				}
                      console.log(row);
-                          		$.ajax('/waterfall/updateTask', {
+                        $.ajax('/updateData', {//'/waterfall/updateTask', {
                             type: 'POST',
                             data: JSON.stringify(row),
                             contentType: 'text/json',
@@ -210,7 +210,7 @@
 				console.log(row);
 				console.log(JSON.stringify(row));
 							
-									 $.ajax('/waterfall/newTask', {
+									 $.ajax('/newData', {//'/waterfall/newTask', {
                             type: 'POST',
                             data: JSON.stringify(row),
                             contentType: 'text/json',

@@ -48,7 +48,7 @@ exports.getSprintDetails=function(req,res){
 						} else if(docs.length <= 0) {
 							console.log("Error 404: Project Details not Found...");
 							sprintData=[];
-							//res.send(404);
+							//res.send(404);	
 						} else {
 							console.log("@@@@@@@");
 							console.log(docs[0].details);
@@ -100,7 +100,7 @@ exports.getSprintData=function(req,res){
 	//res.send(JSON.parse(data));
 };
 
-exports.newSprint=function(req,res){
+/*exports.newSprint=function(req,res){
 	console.log('here');
 	console.log("SCRUM: In Add Function...");
     var data = '';
@@ -170,4 +170,4 @@ exports.updateSprint=function(req,res){
 			}
 		});
 	});
-}
+}*/

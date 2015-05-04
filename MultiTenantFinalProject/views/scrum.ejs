@@ -193,7 +193,7 @@
 							}%>
 				}
                      console.log(row);
-                          		$.ajax('/scrum/updateSprint', {
+                        $.ajax('/updateData', {//'/scrum/updateSprint', {
                             type: 'POST',
                             data: JSON.stringify(row),
                             contentType: 'text/json',
@@ -229,13 +229,13 @@
 				console.log(row);
 				console.log(JSON.stringify(row));
 							
-									 $.ajax('/scrum/newSprint', {
-                            type: 'POST',
-                            data: JSON.stringify(row),
-                            contentType: 'text/json',
-                            success: function() { console.log('sprint addedd success'); },
-                            error  : function() {   alert("Request failed: " ); }
-                        });
+									  $.ajax('/newData', {//'/scrum/newSprint', {
+                        type: 'POST',
+                        data: JSON.stringify(row),
+                        contentType: 'text/json',
+                        success: function() { console.log('sprint addedd success'); },
+                        error  : function() {   alert("Request failed: " ); }
+                    });
                    // var rowID = $('#jqxgrid').jqxGrid('getrowid', editrow);
 					var commit = $("#jqxgrid").jqxGrid('addrow', null, row)
                    // $('#jqxgrid').jqxGrid('updaterow', rowID, row);

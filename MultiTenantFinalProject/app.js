@@ -13,7 +13,8 @@ var mysql = require('mysql'),
   index=require('./routes/index'),
   kanban=require('./routes/kanban'),
   user = require('./routes/user'),
-  waterfall=require('./routes/waterfall');
+  waterfall=require('./routes/waterfall'),
+  mongoDao = require('./routes/mongoDao');
   
 
 //load customers routes
@@ -72,10 +73,10 @@ app.use(
     connection(mysql,{
         
      host: 'localhost',
-        user: 'root',
-        password : 'root',
+        user: 'CMPE281USER',
+        password : 'CMPE281USER',
         port : 3306, //port mysql
-        database:'cmpe281'
+        database:'CMPE281_PROJECT'
 
     },'pool') //or single
 
@@ -105,14 +106,17 @@ app.get('/sprint',routes.getSprintData);
 app.get('/kanban/:projectid',kanban.getCardDara);
 app.get('/waterfall/:projectid',waterfall.getTaskData);
 
-app.post('/scrum/newSprint',routes.newSprint);
+/*app.post('/scrum/newSprint',routes.newSprint);
 app.post('/scrum/updateSprint',routes.updateSprint);
 
 app.post('/kanban/newKanban',kanban.newKanban);
 app.post('/kanban/updateKanban',kanban.updateKanban);
 
 app.post('/waterfall/newTask',waterfall.newTask);
-app.post('/waterfall/updateTask',waterfall.updateTask);
+app.post('/waterfall/updateTask',waterfall.updateTask);*/
+
+app.post('/newData', mongoDao.newData);
+app.post('/updateData', mongoDao.updateData);
 
 
 app.use(app.router);
