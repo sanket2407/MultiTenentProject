@@ -48,15 +48,18 @@ exports.getSprintDetails=function(req,res){
 						} else if(docs.length <= 0) {
 							console.log("Error 404: Project Details not Found...");
 							sprintData=[];
+							 console.log(sprintData);
+		            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData});
 							//res.send(404);	
 						} else {
 							console.log("@@@@@@@");
 							console.log(docs[0].details);
 							sprintData=JSON.stringify(docs[0].details);
 							console.log(sprintData);
-						}
-		            		  console.log(sprintData);
+							 console.log(sprintData);
 		            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData});
+						}
+		            		  
 		      		});
 				} else {
 					console.log("Error in Connection");

@@ -5,9 +5,9 @@ var mysql = require('mysql');
 function getConnection(){
 	var connection = mysql.createConnection({
 	    host     : 'localhost',
-	    user     : 'CMPE281USER',
-	    password : 'CMPE281USER',
-	    database : 'CMPE281_PROJECT',
+	    user     : 'root',
+	    password : 'root',
+	    database : 'CMPE281',
 	    multipleStatements: true
 	});
 	return connection;

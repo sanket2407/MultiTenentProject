@@ -34,12 +34,16 @@
             // prepare the data
 			var temp=[];
 			var dataSprints;
-		if(typeof sprintsData === "undefined"){
-		dataSprints =[];
-		}
-		else{
-				dataSprints ='<%- (sprintsData) %>';
-		}
+		<% 
+			if(sprintsData==null || sprintsData.length==0){
+			%> 
+			dataSprints =[];
+			<%
+			}
+			else{
+		%>
+					dataSprints ='<%- (sprintsData) %>';
+		<% } %>
 			<%
 				for(i=0;i<sprintFields.length;i++){
 				%>

@@ -24,12 +24,17 @@
         $(document).ready(function () {
 		var temp=[];
 		var dataSprints;
-		if(typeof sprintsData === "undefined"){
-		dataSprints =[];
-		}
-		else{
-				dataSprints ='<%- (sprintsData) %>';
-		}
+		<% 
+			if(sprintsData==null || sprintsData.length==0){
+			%> 
+			dataSprints =[];
+			<%
+			}
+			else{
+		%>
+					dataSprints ='<%- (sprintsData) %>';
+		<% } %>
+
 		
 			<%
 				for(i=0;i<sprintFields.length;i++){
@@ -146,14 +151,7 @@
 					  $('#AddSprintData').css('display', 'none');
                      $("#popupWindow").jqxWindow('open');
                  }
-                 },
-				       { text: 'Manage Stories', datafield: '', columntype: 'button', width: 150, cellsrenderer: function () {
-                     return "ManageStories";
-                  }, buttonclick: function (row) {
-						// row is id or row
-                     // open the popup window when the user clicks a button.
-						
-                 }}
+                 }
                 ]
             });
 			 var dataAdapterStories = new $.jqx.dataAdapter(sourceStories);

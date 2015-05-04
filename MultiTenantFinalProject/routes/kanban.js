@@ -24,22 +24,7 @@ exports.getCardDara=function(req,res){
 				MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err, db) {
 					if(!err) {
 						db.collection('projectDetails').find({ _id: pid }).toArray(function(err, docs) {
-						/*	if (err) { 
-								console.log(err.message);
-								res.send(500, err.message);
-							} else if(docs.length <= 0) {
-								console.log("Error 404: Project Details not Found...");
-								res.send(404);
-							} else {
-								console.log("@@@@@@@");
-								console.log(docs[0].details);
-								var sprintData=JSON.stringify(docs[0].details);
-								console.log(sprintData);
-			            		
-								res.render('kanban',{sprintFields:fields,sprintsData:sprintData});
-			        
-			            	}*/
-							
+						
 							var sprintData;
 							if (err) { 
 								console.log(err.message);
@@ -47,15 +32,18 @@ exports.getCardDara=function(req,res){
 							} else if(docs.length <= 0) {
 								console.log("Error 404: Project Details not Found...");
 								sprintData=[];
+								 console.log(sprintData);
+			            		  res.render('kanban',{sprintFields:fields,sprintsData:sprintData});
 								//res.send(404);
 							} else {
 								console.log("@@@@@@@");
 								console.log(docs[0].details);
 								sprintData=JSON.stringify(docs[0].details);
 								console.log(sprintData);
-							}
-			            		  console.log(sprintData);
+								 console.log(sprintData);
 			            		  res.render('kanban',{sprintFields:fields,sprintsData:sprintData});
+							}
+			            		 
 			      		});
 					} else {
 						console.log("Error in Connection");
