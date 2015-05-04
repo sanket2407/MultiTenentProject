@@ -93,7 +93,7 @@ exports.updateData = function(req,res) {
 									console.log("Sprint Updated Successfully...");
 									db.close();
 									res.writeHead(200, {'content-type': 'text/plain'});
-									res.send("OK");
+									res.send();
 								} else {
 									console.log("Some Error updating..."+err_AddToSet);
 									db.close();
