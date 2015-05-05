@@ -4,25 +4,25 @@
 <head>
   <meta charset="utf-8">
   <title>Login - Software Modeling</title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes"> 
+ 
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
   <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
   <link href="/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
- 
-<link href="../css/style.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
 
   <script src="/js/jquery-1.11.2.min.js"></script>
   <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
   <link href="/css/pages/signin.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/datepicker.css">  
-<script src="/js/bootstrap-datepicker.js"></script>
+  <script src="/js/bootstrap-datepicker.js"></script>
 
-<script src="js/signin.js"></script>
+  <script src="js/signin.js"></script>
   <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script src="http://code.highcharts.com/modules/exporting.js"></script>
+
   <script>
   function OpenModal() {
    $('#newProjectModal').modal('show'); 
@@ -75,12 +75,57 @@ $('#startDate').datepicker({
                     }
                   });
                 }
-
-
-
-
-
               });
+              
+  $(function () {
+  $(document).ready(function () {
+        
+        for(var i=0; i<6;i++)
+        {
+        $('#container'+i).highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: 'Project Status'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Story',
+                data: [
+                    {
+                        name: 'completed',
+                        y: 30,
+                        sliced: true,
+                        selected: true
+                    },
+                    {
+                        name: 'Remaining',
+                        y: 70
+                    },
+                ]
+            }]
+        });
+        }
+    });
+
+	});
+              
 
 });
 
@@ -92,81 +137,76 @@ $('#startDate').datepicker({
 
 <body>
 
-  <div class="navbar navbar-fixed-top">
-
-
-    <div class="navbar-inner">
-
+<div class="navbar navbar-fixed-top">
+   <div class="navbar-inner">
       <div class="container">
-
         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-
         <a class="brand" href="/">
           Software Modeling   
         </a>    
-
+        
         <div class="nav-collapse">
-
           <ul class="nav navbar-nav">
             <li><a href="/home">Home </a></li>
-
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Project <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#" onclick="OpenModal()" >Create Project</a></li>
                 <li><a href="#">View All Projects</a></li>
-
               </ul>
             </li>
-
-
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Profile <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#">Edit Profile</a></li>
-
-
               </ul>
             </li>
           </ul>
 
-          <ul class="nav pull-right">
-
+         <ul class="nav pull-right">
             <li class="">           
               <a href="/logout" class="">
                 Sign out
               </a>
-
             </li>
+         </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
-
-          </ul>
-
-        </div><!--/.nav-collapse -->  
-
-      </div> <!-- /container -->
-
-    </div> <!-- /navbar-inner -->
-
-  </div> <!-- /navbar -->
-
-
-
-
-  <div class="container">
-    <br>
-    <br>
-    
-    <div class="main">
-
+ <div class="container">
+   <div class="main">
       <div class="main-inner">
         <div class="container">
           <div class="row">
+          
            <div class="span12">
+	 		<div id="loose" class="widget widget-table action-table">
+            <div class="widget-header"> <i class="icon-th-list"></i>
+              <h3>Project List</h3>
+            </div>
+            <!-- /widget-header -->
+            <div class="widget-content">
+          		<table>
+          		<tr>
+             	<td><div id="container0" style="min-width: 230px; height: 250px; max-width: 350px; margin: 0 auto"></div></td>
+          		<td><div id="container1" style="min-width: 230px; height: 250px; max-width: 350px; margin: 0 auto"></div></td>
+          		<td><div id="container2" style="min-width: 230px; height: 250px; max-width: 350px; margin: 0 auto"></div></td>
+          		<td><div id="container3" style="min-width: 230px; height: 250px; max-width: 350px; margin: 0 auto"></div></td>
+          		<td><div id="container4" style="min-width: 232px; height: 250px; max-width: 350px; margin: 0 auto"></div></td>
+            	</tr>
+            	</table>
+            </div>
+            <!-- /widget-content --> 
+    	 </div>
+ 		</div>
+          
+         <div class="span12">
              <div id="loose" class="widget widget-table action-table">
               <div class="widget-header"> <i class="icon-th-list"></i>
                 <h3>Project List</h3>
@@ -183,21 +223,13 @@ $('#startDate').datepicker({
               <!-- /widget-content --> 
             </div>
           </div>
+          
+          
         </div>
       </div>
     </div>
-
-
-
-
-
-
   </div>   
-
 </div>
-
-
-
 
 
 <!--New Project Pop up window -->
@@ -243,9 +275,6 @@ $('#startDate').datepicker({
         <label >Projected End Date</label>
         <input  type="text" placeholder="click to show datepicker"  id="endDate">
       </div>
-
-
-
 
     </form>
 

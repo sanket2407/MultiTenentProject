@@ -4,9 +4,9 @@ var mysql = require('mysql');
 function getConnection() {
 	var connection = mysql.createConnection({
 		host : 'localhost',
-		user : 'CMPE281USER',
-		password : 'CMPE281USER',
-		database : 'CMPE281_PROJECT',
+		user : 'root',
+		password : 'root',
+		database : 'cmpe281',
 		multipleStatements : true
 	});
 	return connection;
@@ -16,7 +16,7 @@ exports.list = function(req, res) {
 
 	var loggedInUser = req.session.user;
 
-	if (loggedInUser == null) {
+	if (loggedInUser === null) {
 		res.redirect("/login");
 	} else {
 
@@ -28,18 +28,18 @@ exports.list = function(req, res) {
 		connection.query(sqlQuery, function(err, rows, fields) {
 			if (err) {
 				console.log("Error Selecting : %s", err);
-				res.render('projectlist1', {
+				res.render('projectlist', {
 					error : "",
 					data : "error in fetching data"
 				});
 			} else if (rows.length === 0) {
-				res.render('projectlist1', {
+				res.render('projectlist', {
 					error : "",
 					data : rows
 				});
 			} else {
 				console.log(rows);
-				res.render('projectlist1', {
+				res.render('projectlist', {
 					error : "",
 					data : rows
 				});
