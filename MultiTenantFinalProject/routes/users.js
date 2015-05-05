@@ -71,11 +71,11 @@ exports.add = function(req, res){
 
 exports.edit = function(req, res){
     
-    var email = req.params.email;
-    
+    //var email = req.params.email;
+	var loggedInUser = req.session.user;
     req.getConnection(function(err,connection){
        
-        var query = connection.query("SELECT * FROM user WHERE email = '"+email+"'",function(err,rows)
+        var query = connection.query("SELECT * FROM user WHERE userid = '"+loggedInUser+"'",function(err,rows)
         {
             
             if(err)
@@ -83,7 +83,7 @@ exports.edit = function(req, res){
                  res.render('error',{error:err});
             }
             else{
-            res.render('edit_user',{page_title:"Edit Customers - Node.js",data:rows,error:""});
+            res.render('edit_user',{page_title:"Edit Customers",data:rows,error:""});
             }
            
          });

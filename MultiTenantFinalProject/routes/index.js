@@ -12,6 +12,13 @@ exports.index = function(req, res){
 };
 
 exports.getSprintDetails=function(req,res){
+	
+	var loggedInUser = req.session.user;
+
+	if (loggedInUser == null) {
+		res.redirect("/login");
+	} else {
+	
 	var sql="select field_name,parent_field  from model_fields_master where model_type=1;";
 	mysql.fetchData(function(err,results){
 		
@@ -94,7 +101,7 @@ exports.getSprintDetails=function(req,res){
 			}
 	},sql);
 	
-
+	}
 };
 
 exports.getSprintData=function(req,res){

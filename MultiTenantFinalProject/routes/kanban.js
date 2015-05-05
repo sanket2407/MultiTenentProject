@@ -6,6 +6,12 @@ var MongoClient = require('mongodb').MongoClient;
 
 exports.getCardDara=function(req,res){
 		
+	var loggedInUser = req.session.user;
+
+	if (loggedInUser == null) {
+		res.redirect("/login");
+	} else {
+	
 	var projectId = parseInt(req.params.projectid);
 	var sql="select field_name from model_fields_master where model_type=2";
 	mysql.fetchData(function(err,results){
@@ -54,7 +60,7 @@ exports.getCardDara=function(req,res){
 			}
 	},sql);
 	
-	
+	}
 }
 
 /*exports.newKanban=function(req,res){

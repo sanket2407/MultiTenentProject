@@ -74,7 +74,7 @@ app.use(
     	
         host: 'localhost',
         user: 'root',
-        password : 'root',
+        password : 'welcome1',
         port : 3306, //port mysql
         database:'cmpe281'
     },'pool') //or single
@@ -87,7 +87,7 @@ app.get('/login', login.login);
 app.get('/signup', signup.signup);
 app.post('/users/signup',users.signup);
 app.post('/users/login',users.loginAuthentication);
-app.post('/users/edit/:email',users.edit);
+app.get('/users/edit',users.edit);
 app.post('/users/edit_save/:userid',users.edit_save);
 app.post('/users/delete/:email',users.delete_user);
 app.get('/home', home.showDashboard);
