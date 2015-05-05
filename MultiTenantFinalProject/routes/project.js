@@ -28,18 +28,18 @@ exports.list = function(req, res) {
 		connection.query(sqlQuery, function(err, rows, fields) {
 			if (err) {
 				console.log("Error Selecting : %s", err);
-				res.render('projectlist1', {
+				res.render('projectlist', {
 					error : "",
 					data : "error in fetching data"
 				});
 			} else if (rows.length === 0) {
-				res.render('projectlist1', {
+				res.render('projectlist', {
 					error : "",
 					data : rows
 				});
 			} else {
 				console.log(rows);
-				res.render('projectlist1', {
+				res.render('projectlist', {
 					error : "",
 					data : rows
 				});

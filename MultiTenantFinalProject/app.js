@@ -71,13 +71,12 @@ if ('development' === app.get('env')) {
 app.use(
     
     connection(mysql,{
-        
-     host: 'localhost',
-        user: 'CMPE281USER',
-        password : 'CMPE281USER',
+    	
+        host: 'localhost',
+        user: 'root',
+        password : 'root',
         port : 3306, //port mysql
-        database:'CMPE281_PROJECT'
-
+        database:'cmpe281'
     },'pool') //or single
 
 );
