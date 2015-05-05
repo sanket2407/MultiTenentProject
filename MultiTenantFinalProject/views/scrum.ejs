@@ -19,7 +19,12 @@
     <script type="text/javascript" src="/jqwidgets/jqxdropdownlist.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="/scripts/demos.js"></script>
-   
+   <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
+<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+ 
+<link href="../css/style.css" rel="stylesheet">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
 		var temp=[];
@@ -261,6 +266,72 @@
     </script>
 </head>
 <body class='default'>
+
+    <div class="navbar navbar-fixed-top">
+
+
+    <div class="navbar-inner">
+
+      <div class="container">
+
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+
+        <a class="brand" href="/">
+          Software Modeling   
+        </a>    
+
+        <div class="nav-collapse">
+
+          <ul class="nav navbar-nav">
+            <li><a href="/home">Home </a></li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Project <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="OpenModal()" >Create Project</a></li>
+                <li><a href="#">View All Projects</a></li>
+
+              </ul>
+            </li>
+
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Profile <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Edit Profile</a></li>
+
+
+              </ul>
+            </li>
+          </ul>
+
+          <ul class="nav pull-right">
+
+            <li class="">           
+              <a href="/logout" class="">
+                Sign out
+              </a>
+
+            </li>
+
+
+          </ul>
+
+        </div><!--/.nav-collapse -->  
+
+      </div> <!-- /container -->
+
+    </div> <!-- /navbar-inner -->
+
+  </div> <!-- /navbar -->
+
+
+<div class="container"> 
+
 	<table>
 	
 	<!--<%
@@ -273,7 +344,8 @@
 	<br>
 	<br>
 	</table>
-	<input type="submit" id="addSprint" value="Add Story"/>
+	
+    <button type="button" id="addSprint" class="btn btn-info">Add Story</button>
 	<br>
 	<br>
     <div id='jqxWidget'>
@@ -314,5 +386,6 @@
 	   </div>
 	   
     </div>
+  </div>
 </body>
 </html>
