@@ -18,7 +18,6 @@
     <script type="text/javascript" src="/jqwidgets/jqxdropdownlist.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="/scripts/demos.js"></script>
-    <script type="text/javascript" src="generatedata.js"></script>
 
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
 <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -57,8 +56,9 @@
 		  <%}%>
 		  <%}%>
 		  ]);
-
         chart.draw(dataTable);
+		var x = (dataTable.getNumberOfRows()*41 + 30).toString();
+		document.getElementById('timeline').style.height = x+'px';
       }
     </script>
   
@@ -96,7 +96,6 @@
           id: 'id',
           //url: url
       };
-		
 
             var dataAdapter = new $.jqx.dataAdapter(source);
             var editrow = -1;
@@ -114,7 +113,7 @@
 					{ text: '<%=sprintFields[i]%>',datafield: '<%=sprintFields[i]%>', width: 150 },
 				<% }%>
        
-                  { text: 'Edit', datafield: 'Edit', columntype: 'button', width: 100, cellsrenderer: function () {
+                  { text: 'Edit', datafield: 'Edit', columntype: 'button', width: 150, cellsrenderer: function () {
                      return "Edit";
                   }, buttonclick: function (row) {
                      // open the popup window when the user clicks a button.
@@ -278,7 +277,6 @@
               </ul>
             </li>
 
-
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Profile <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
@@ -297,27 +295,21 @@
               </a>
 
             </li>
-
-
           </ul>
-
         </div><!--/.nav-collapse -->  
-
       </div> <!-- /container -->
-
     </div> <!-- /navbar-inner -->
-
   </div> <!-- /navbar -->
-
 
 <div class="container"> 
 <br>
 <br>
 <center>
-<div>
-<div id="timeline" style="width: 900px; height: 180px;"></div>
+<div style="height:auto;">
+<div id="timeline" style="width: 1000px; height:10px;"></div>
 </div>
 </center>
+
 <div class="main">
       <div class="main-inner">
         <div class="container">
@@ -330,7 +322,7 @@
             </div>
             <!-- /widget-header -->
             <div class="widget-content">
-
+<center>
 
   <table>
 	
@@ -342,12 +334,10 @@
 	<tr><td><%=sprintFields[i]%></td><td><input type="text" name="sprintField<%=i%>" ></input></td></tr>
 	<%}%>-->
 	<br>
-	<br>
 	</table>
-	
-  <button type="button" id="addSprint" class="btn btn-info">Add Task</button>
-
-	<br>
+	<div>
+    <button type="button" id="addSprint" class="btn btn-info">Add Task</button>
+	</div>
 	<br>
     <div id='jqxWidget'>
         <div id="jqxgrid"></div>
@@ -380,6 +370,7 @@
 						</td>
                     </tr>
                 </table>
+				</center>
             </div>
        </div>
     </div>

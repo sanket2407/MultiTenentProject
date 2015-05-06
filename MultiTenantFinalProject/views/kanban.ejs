@@ -18,14 +18,57 @@
     <script type="text/javascript" src="/jqwidgets/jqxdropdownlist.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxinput.js"></script>
     <script type="text/javascript" src="/scripts/demos.js"></script>
-    <script type="text/javascript" src="generatedata.js"></script>
+	
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
 <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
   <link href="/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
  
-<link href="../css/style.css" rel="stylesheet">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script>
+google.load('visualization', '1', {packages: ['corechart', 'bar']});
+google.setOnLoadCallback(drawColColors);
 
+function drawColColors() {
+
+	<%	
+		var hike = 100/doc.length;
+		console.log(hike);
+		var done = 0, inprogress = 0, pending = 0;
+		for(var index=0; index<doc.length; index++)
+		{
+		if(doc[index].CardStatus === "Done"){done = done+hike;}
+		else if(doc[index].CardStatus === "InProgress"){inprogress = inprogress+hike;}
+		else if(doc[index].CardStatus === "Pending"){pending = pending+hike;}
+		}
+	%>
+       var data = google.visualization.arrayToDataTable([
+         ['Status', 'Density', { role: 'style' }],
+         ['Done', <%=done%>, '#0066FF'],            
+         ['In Progress', <%=inprogress%>, '#00CC66'],
+       ['Pending', <%=pending%>, 'red' ], // CSS-style declaration
+      ]);
+
+      var options = {
+        title: 'Kanban card status',
+        colors: ['#9575cd', '#33ac71'],
+        hAxis: {
+          title: 'Kanbab Status',
+          format: 'h:mm a',
+          viewWindow: {
+            min: [7, 30, 0],
+            max: [17, 30, 0]
+          }
+        },
+        vAxis: {
+          title: 'completed cards (%)'
+        }
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+	
+    }
+</script>
 
 
     <script type="text/javascript">
@@ -51,41 +94,9 @@
 					var obj = {name: '<%=sprintFields[i]%>', type: '<%=sprintFields[i]%>'};
 					temp.push(obj);
 				<% }%>
-			/*
-			 var source =
-      {
-          datatype: "json",
-          datafields: [
-              { name: 'subcategoryid', type: 'number' },
-              { name: 'name', type: 'string' },
-              { name: 'description', type: 'string' }
-          ],
-          id: 'id',
-          url: url
-      };
-	  */
-           // var data = generatedata(200);
-			//var dataSprints ='<%- (sprintsData) %>';//'{"SprintId":"one","SprintNo":"two","SprintDescription":"three"}';
+		
 			var dataStories='{"StoryTitle":"one","StartDate":"two","EndDate":"three","AssignedTo":"three","StoryDescription":"three"}';
-            /*var source =
-            {
-                localdata: data,
-                datatype: "array",
-                datafields:
-                [
-                    { name: 'firstname', type: 'string' },
-                    { name: 'lastname', type: 'string' },
-                    { name: 'productname', type: 'string' },
-                    { name: 'quantity', type: 'number' },
-                    { name: 'price', type: 'number' }
-                ],
-                updaterow: function (rowid, rowdata, commit) {
-                    // synchronize with the server - send update command
-                    // call commit with parameter true if the synchronization with the server is successful 
-                    // and with parameter false if the synchronization failder.
-                    commit(true);
-                }
-            };  */
+      
 			 var url = "/getSprintData?projectid=1";
 			 var source =
       {
@@ -242,10 +253,7 @@
                     $("#popupWindowStories").jqxWindow('hide');
                 
             });
-      
-				
-
-	
+     					
     </script>
 </head>
 <body class='default'>
@@ -315,6 +323,26 @@
 
 
 <div class="container"> 
+<br>
+<center>
+<div>
+<div id="chart_div" style="width: 900px; height: 250px;"></div>
+</div>
+</center>
+<br>
+<div class="main">
+      <div class="main-inner">
+        <div class="container">
+          <div class="row">
+          
+           <div class="span12">
+	 		<div id="loose" class="widget widget-table action-table">
+            <div class="widget-header"> <i class="icon-th-list"></i>
+              <h3>Project List</h3>
+            </div>
+            <!-- /widget-header -->
+            <div class="widget-content">
+
 
   <table>
 	
@@ -325,13 +353,12 @@
 	%>
 	<tr><td><%=sprintFields[i]%></td><td><input type="text" name="sprintField<%=i%>" ></input></td></tr>
 	<%}%>-->
-	<br>
-	<br>
-	</table>
 	
-  <button type="button" id="addSprint" class="btn btn-info">Add Card</button>
-
+	</table>
 	<br>
+	<center>
+  <button type="button" id="addSprint" class="btn btn-info">Add Card</button>
+	</center>
 	<br>
     <div id='jqxWidget'>
         <div id="jqxgrid"></div>
@@ -366,11 +393,18 @@
                 </table>
             </div>
        </div>
-	   <div>
-	   <input type="submit" id="addStory" value="Add Story"/>
-	   </div>
-	
     </div>
+  </div>
+  
+  </div>
+            <!-- /widget-content --> 
+    	 </div>
+ 		</div>
+  
+          </div>
+      </div>
     </div>
+  </div>   
+</div>
 </body>
 </html>

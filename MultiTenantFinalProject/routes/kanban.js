@@ -36,19 +36,22 @@ exports.getCardDara=function(req,res){
 							if (err) { 
 								console.log(err.message);
 								res.send(500, err.message);
-							} else if(docs.length <= 0) {
+							}
+							else if(docs.length <= 0) {
 								console.log("Error 404: Project Details not Found...");
 								sprintData=[];
 								 console.log(sprintData);
-			            		  res.render('kanban',{sprintFields:fields,sprintsData:sprintData,pid:pid});
+			            		  res.render('kanban',{sprintFields:fields, sprintsData:sprintData, pid:pid, doc:docs[0].details});
 								//res.send(404);
 							} else {
 								console.log("@@@@@@@");
 								console.log(docs[0].details);
+								var x = docs[0].details;
+								console.log("it was docs");
 								sprintData=JSON.stringify(docs[0].details);
 								console.log(sprintData);
 								 console.log(sprintData);
-			            		  res.render('kanban',{sprintFields:fields,sprintsData:sprintData,pid:pid});
+			            		  res.render('kanban',{sprintFields:fields, sprintsData:sprintData,pid:pid, doc:docs[0].details});
 							}
 			            		 
 			      		});
