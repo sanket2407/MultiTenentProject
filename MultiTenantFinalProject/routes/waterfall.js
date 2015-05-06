@@ -5,13 +5,12 @@ var mysql=require('./mysql');
 var MongoClient = require('mongodb').MongoClient;
 
 exports.getTaskData=function(req,res){
-	
 	var loggedInUser = req.session.user;
 
 	if (loggedInUser == null) {
 		res.redirect("/login");
 	} else {
-	
+		
 	var projectId = parseInt(req.params.projectid);
 	var sql="select field_name from model_fields_master where model_type=3";
 	mysql.fetchData(function(err,results){
@@ -38,7 +37,8 @@ exports.getTaskData=function(req,res){
 								console.log("Error 404: Project Details not Found...");
 								sprintData=[];
 								console.log(sprintData);
-			            		  res.render('waterfall',{sprintFields:fields,sprintsData:sprintData});
+								console.log(pid);
+			            		  res.render('waterfall',{sprintFields:fields,sprintsData:sprintData, pid:pid});
 								//res.send(404);
 							} else {
 								console.log("@@@@@@@");
@@ -46,10 +46,9 @@ exports.getTaskData=function(req,res){
 								sprintData=JSON.stringify(docs[0].details);
 								console.log(sprintData);
 								console.log(sprintData);
-			            		  res.render('waterfall',{sprintFields:fields,sprintsData:sprintData});
-							}
-			            		  
-			            		  
+								console.log(pid);
+			            		  res.render('waterfall',{sprintFields:fields,sprintsData:sprintData, pid:pid});
+							}			            		 
 			      		});
 					} else {
 						console.log("Error in Connection");
@@ -58,8 +57,8 @@ exports.getTaskData=function(req,res){
 			
 			}
 	},sql);
+}
 	
-	}
 }
 
 /*exports.newTask=function(req,res){

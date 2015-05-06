@@ -25,6 +25,8 @@
  
 <link href="../css/style.css" rel="stylesheet">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+   
     <script type="text/javascript">
         $(document).ready(function () {
 		var temp=[];
@@ -196,7 +198,7 @@
 							}%>
 				}
                      console.log(row);
-                        $.ajax('/updateData', {//'/scrum/updateSprint', {
+                        $.ajax('/updateData/'+<%=pid%>+'/'+"scrum", {//'/scrum/updateSprint', {
                             type: 'POST',
                             data: JSON.stringify(row),
                             contentType: 'text/json',
@@ -232,7 +234,7 @@
 				console.log(row);
 				console.log(JSON.stringify(row));
 							
-									  $.ajax('/newData', {//'/scrum/newSprint', {
+									  $.ajax('/newData?pid='+<%=pid%>, {//'/scrum/newSprint', {
                         type: 'POST',
                         data: JSON.stringify(row),
                         contentType: 'text/json',
@@ -266,8 +268,7 @@
     </script>
 </head>
 <body class='default'>
-
-    <div class="navbar navbar-fixed-top">
+<div class="navbar navbar-fixed-top">
 
 
     <div class="navbar-inner">
@@ -332,6 +333,7 @@
 
 <div class="container"> 
 
+
 	<table>
 	
 	<!--<%
@@ -344,8 +346,7 @@
 	<br>
 	<br>
 	</table>
-	
-    <button type="button" id="addSprint" class="btn btn-info">Add Story</button>
+	  <button type="button" id="addSprint" class="btn btn-info">Add Story</button>
 	<br>
 	<br>
     <div id='jqxWidget'>
@@ -386,6 +387,6 @@
 	   </div>
 	   
     </div>
-  </div>
+    </div>
 </body>
 </html>

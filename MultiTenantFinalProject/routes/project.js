@@ -75,10 +75,10 @@ exports.edit = function(req, res) {
 				console.log("came at scrum");
 				res.redirect('/scrum/'+projectid);
 			}
-			else if(rows[0].project_type === 1){
+			else if(rows[0].project_type === 2){
 				res.redirect('/kanban/'+projectid);
 			}
-			else if(rows[0].project_type === 1){
+			else if(rows[0].project_type === 3){
 				res.redirect('/waterfall/'+projectid);
 			}else{
 				res.render('error', {

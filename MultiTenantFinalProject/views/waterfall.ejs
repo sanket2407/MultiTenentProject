@@ -96,9 +96,7 @@
           //url: url
       };
 		
-	
-			
-	
+
             var dataAdapter = new $.jqx.dataAdapter(source);
             var editrow = -1;
             // initialize jqxGrid
@@ -178,7 +176,7 @@
 							}%>
 				}
                      console.log(row);
-                        $.ajax('/updateData', {//'/waterfall/updateTask', {
+                        $.ajax('/updateData/'+<%=pid%>+'/'+"waterfall", {//'/waterfall/updateTask', {
                             type: 'POST',
                             data: JSON.stringify(row),
                             contentType: 'text/json',
@@ -214,7 +212,7 @@
 				console.log(row);
 				console.log(JSON.stringify(row));
 							
-									 $.ajax('/newData', {//'/waterfall/newTask', {
+									 $.ajax('/newData?pid='+<%=pid%>, {
                             type: 'POST',
                             data: JSON.stringify(row),
                             contentType: 'text/json',

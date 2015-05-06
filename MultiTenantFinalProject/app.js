@@ -74,7 +74,7 @@ app.use(
     	
         host: 'localhost',
         user: 'root',
-        password : 'welcome1',
+        password : 'root',
         port : 3306, //port mysql
         database:'cmpe281'
     },'pool') //or single
@@ -115,7 +115,7 @@ app.post('/waterfall/newTask',waterfall.newTask);
 app.post('/waterfall/updateTask',waterfall.updateTask);*/
 
 app.post('/newData', mongoDao.newData);
-app.post('/updateData', mongoDao.updateData);
+app.post('/updateData/:pid/:type', mongoDao.updateData);
 
 
 app.use(app.router);

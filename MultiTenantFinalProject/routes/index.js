@@ -19,87 +19,90 @@ exports.getSprintDetails=function(req,res){
 		res.redirect("/login");
 	} else {
 	
-	var sql="select field_name,parent_field  from model_fields_master where model_type=1;";
-	mysql.fetchData(function(err,results){
-		
-		if(err)
-			{
-			throw err;
-			}
-		else
-			{
-			console.log(results);
-			var sprintFields=[];
-			var backlogFields=[];
-			//var i=0;
-			for(var i=0;i<results.length;i++){
-				console.log(results[i].parent_field);
-				if(results[i].parent_field=="sprint"){
-					sprintFields.push(results[i].field_name);
-				}
-				else if(results[i].parent_field=="story"){
-					backlogFields.push(results[i].field_name)
-				}
-			}
-			
-			console.log(sprintFields);
-			console.log(backlogFields);
-			var pid = parseInt(req.params.projectid);
-			MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err, db) {
-				if(!err) {
-					db.collection('projectDetails').find({ _id: pid }).toArray(function(err, docs) {
-						var sprintData;
-						if (err) { 
-							console.log(err.message);
-							res.send(500, err.message);
-						} else if(docs.length <= 0) {
-							console.log("Error 404: Project Details not Found...");
-							sprintData=[];
-							 console.log(sprintData);
-		            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData});
-							//res.send(404);	
-						} else {
-							console.log("@@@@@@@");
-							console.log(docs[0].details);
-							sprintData=JSON.stringify(docs[0].details);
-							console.log(sprintData);
-							 console.log(sprintData);
-		            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData});
-						}
-		            		  
-		      		});
-				} else {
-					console.log("Error in Connection");
-				}
-			});
+		var sql="select field_name,parent_field  from model_fields_master where model_type=1;";
 
+		mysql.fetchData(function(err,results){
 			
-	      
-		/*	var options = {
-					  host: 'http://10.189.177.48',
-					  port:8080,
-					  path: 'multitenantSaasProject/projectDetails'
-					};
-			var request = http.get(options, function (response) {
-			    var data = '';
-			    response.on('data', function (chunk) {
-			        data += chunk;
-			    });
-			    response.on('end', function () {
-			    	console.log('from varun');
-			        console.log(data);
-			
-			    });
-			});
-			request.on('error', function (e) {
-			    console.log(e.message);
-			    
-			});*/
-			//request.end();
-			
-			
-			}
-	},sql);
+			if(err)
+				{
+				throw err;
+				}
+			else
+				{
+				console.log(results);
+				var sprintFields=[];
+				var backlogFields=[];
+				//var i=0;
+				for(var i=0;i<results.length;i++){
+					console.log(results[i].parent_field);
+					if(results[i].parent_field=="sprint"){
+						sprintFields.push(results[i].field_name);
+					}
+					else if(results[i].parent_field=="story"){
+						backlogFields.push(results[i].field_name)
+					}
+				}
+				
+				console.log(sprintFields);
+				console.log(backlogFields);
+				var pid = parseInt(req.params.projectid);
+				MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err, db) {
+					if(!err) {
+						db.collection('projectDetails').find({ _id: pid }).toArray(function(err, docs) {
+							var sprintData;
+							if (err) { 
+								console.log(err.message);
+								res.send(500, err.message);
+							} else if(docs.length <= 0) {
+								console.log("Error 404: Project Details not Found...");
+								sprintData=[];
+								 console.log(sprintData);
+			            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData,pid:pid});
+								//res.send(404);	
+							} else {
+								console.log("@@@@@@@");
+								console.log(docs[0].details);
+								sprintData=JSON.stringify(docs[0].details);
+								console.log(sprintData);
+								 console.log(sprintData);
+			            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData,pid:pid});
+							}
+			            		  
+			      		});
+					} else {
+						console.log("Error in Connection");
+					}
+				});
+
+				
+		      
+			/*	var options = {
+						  host: 'http://10.189.177.48',
+						  port:8080,
+						  path: 'multitenantSaasProject/projectDetails'
+						};
+				var request = http.get(options, function (response) {
+				    var data = '';
+				    response.on('data', function (chunk) {
+				        data += chunk;
+				    });
+				    response.on('end', function () {
+				    	console.log('from varun');
+				        console.log(data);
+				
+				    });
+				});
+				request.on('error', function (e) {
+				    console.log(e.message);
+				    
+				});*/
+				//request.end();
+				
+				
+				}
+		},sql);
+		
+
 	
 	}
 };

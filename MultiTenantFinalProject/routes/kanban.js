@@ -11,7 +11,8 @@ exports.getCardDara=function(req,res){
 	if (loggedInUser == null) {
 		res.redirect("/login");
 	} else {
-	
+		
+
 	var projectId = parseInt(req.params.projectid);
 	var sql="select field_name from model_fields_master where model_type=2";
 	mysql.fetchData(function(err,results){
@@ -39,7 +40,7 @@ exports.getCardDara=function(req,res){
 								console.log("Error 404: Project Details not Found...");
 								sprintData=[];
 								 console.log(sprintData);
-			            		  res.render('kanban',{sprintFields:fields,sprintsData:sprintData});
+			            		  res.render('kanban',{sprintFields:fields,sprintsData:sprintData,pid:pid});
 								//res.send(404);
 							} else {
 								console.log("@@@@@@@");
@@ -47,7 +48,7 @@ exports.getCardDara=function(req,res){
 								sprintData=JSON.stringify(docs[0].details);
 								console.log(sprintData);
 								 console.log(sprintData);
-			            		  res.render('kanban',{sprintFields:fields,sprintsData:sprintData});
+			            		  res.render('kanban',{sprintFields:fields,sprintsData:sprintData,pid:pid});
 							}
 			            		 
 			      		});
@@ -60,7 +61,9 @@ exports.getCardDara=function(req,res){
 			}
 	},sql);
 	
+	
 	}
+	
 }
 
 /*exports.newKanban=function(req,res){

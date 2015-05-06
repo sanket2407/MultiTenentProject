@@ -8,7 +8,7 @@ var MongoClient = require('mongodb').MongoClient;
  */
 exports.newData = function(req,res) {
 	console.log("In Add Function...");
-
+	var pid=parseInt(req.param('pid'));
 	var data = '';
 	var dataGot = '';
 
@@ -25,7 +25,7 @@ exports.newData = function(req,res) {
 		MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err_connection, db) {
 			if(!err_connection) {
 				console.log("Connected to Mongolab");
-				db.collection('projectDetails').update({ _id: 6}, { $push: { details: dataGot } }, function(err_insertion, records) {
+				db.collection('projectDetails').update({ _id: pid}, { $push: { details: dataGot } }, function(err_insertion, records) {
 					if(!err_insertion) {
 						console.log("Data Inserted Successfully...");
 						db.close();
@@ -50,7 +50,7 @@ exports.newData = function(req,res) {
  */
 exports.updateData = function(req,res) {
 	console.log("In Update Function...");
-
+	
     var tenant = '';
 	var data = '';
 	var dataGot = '';
@@ -66,7 +66,15 @@ exports.updateData = function(req,res) {
 		data += chunk;
 	});
 	console.log(data);
-
+	
+	var pid = parseInt(req.params.pid);
+	tenant = req.params.type;
+	
+	console.log(pid);
+	console.log(tenant);
+	//var pid=parseInt(req.param('pid'));
+	//var projectType = req.param('type');
+	
 	req.addListener('end', function() {
 		dataGot = JSON.parse(data);
 
@@ -85,10 +93,10 @@ exports.updateData = function(req,res) {
 			if(!err_connection) {
 				console.log("Connected to Mongolab");
 				db.collection("projectDetails", function(err, collection) {
-					collection.update({ _id: 6 }, { $pull: updateVal }, function(err_updation, records) {
+					collection.update({ _id: pid }, { $pull: updateVal }, function(err_updation, records) {
 						if(!err_updation) {
 							console.log("Sprint Pulled Successfully...");
-							collection.update({ _id: 6 }, { $addToSet: { details: dataGot } }, function(err_AddToSet, records) {
+							collection.update({ _id: pid }, { $addToSet: { details: dataGot } }, function(err_AddToSet, records) {
 								if(!err_AddToSet) {
 									console.log("Sprint Updated Successfully...");
 									db.close();
