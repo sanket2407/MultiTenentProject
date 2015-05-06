@@ -57,7 +57,7 @@ exports.getSprintDetails=function(req,res){
 								console.log("Error 404: Project Details not Found...");
 								sprintData=[];
 								 console.log(sprintData);
-			            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData,pid:pid});
+			            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData,pid:pid, doc:sprintData});
 								//res.send(404);	
 							} else {
 								console.log("@@@@@@@");

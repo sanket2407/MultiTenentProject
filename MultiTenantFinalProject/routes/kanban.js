@@ -41,7 +41,7 @@ exports.getCardDara=function(req,res){
 								console.log("Error 404: Project Details not Found...");
 								sprintData=[];
 								 console.log(sprintData);
-			            		  res.render('kanban',{sprintFields:fields, sprintsData:sprintData, pid:pid, doc:docs[0].details});
+			            		  res.render('kanban',{sprintFields:fields, sprintsData:sprintData, pid:pid, doc:sprintData});
 								//res.send(404);
 							} else {
 								console.log("@@@@@@@");

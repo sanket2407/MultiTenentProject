@@ -36,7 +36,6 @@ exports.addProject = function(req, res) {
 
 exports.createProject = function(req, res) {
 
-	console.log(req);
 	var loggedInUser = req.session.user;
 
 	if (loggedInUser == null) {

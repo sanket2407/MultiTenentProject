@@ -35,9 +35,10 @@ exports.getTaskData=function(req,res){
 							} else if(docs.length <= 0) {
 								console.log("Error 404: Project Details not Found...");
 								sprintData=[];
+								
 								console.log(sprintData);
 								console.log(pid);
-			            		  res.render('waterfall',{sprintFields:fields,sprintsData:sprintData, pid:pid, doc:docs[0].details});
+			            		  res.render('waterfall',{sprintFields:fields,sprintsData:sprintData, pid:pid, doc:sprintData});
 								//res.send(404);
 							} else {
 								console.log("@@@@@@@");
