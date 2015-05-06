@@ -29,10 +29,10 @@ exports.getSprintDetails=function(req,res){
 				}
 			else
 				{
-				console.log(results);
+				
 				var sprintFields=[];
 				var backlogFields=[];
-				//var i=0;
+				// var i=0;
 				for(var i=0;i<results.length;i++){
 					console.log(results[i].parent_field);
 					if(results[i].parent_field=="sprint"){
@@ -43,8 +43,7 @@ exports.getSprintDetails=function(req,res){
 					}
 				}
 				
-				console.log(sprintFields);
-				console.log(backlogFields);
+				
 				var pid = parseInt(req.params.projectid);
 				MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err, db) {
 					if(!err) {
@@ -57,130 +56,151 @@ exports.getSprintDetails=function(req,res){
 								console.log("Error 404: Project Details not Found...");
 								sprintData=[];
 								 console.log(sprintData);
-			            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData,pid:pid, doc:sprintData});
-								//res.send(404);	
+			            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData,pid:pid});
+								// res.send(404);
 							} else {
 								console.log("@@@@@@@");
+								
+
+							    console.log("@@@@" + req.session.startDate);
+							    console.log("@@@@" + req.session.endDate);
+
+								var totalPoints = 0;
+								var hoursWorked = 0;
+								var isInteger = 0;
+								var date1 = new Date(req.session.startDate);		// start
+																					// date
+								var date2 = new Date(req.session.endDate);          // end
+																					// date
+								var timeDiff = Math.abs(date2.getTime() - date1.getTime()); 
+								var diffDays = (Math.ceil(timeDiff / (1000 * 3600 * 24))) + 1;					
+								
+								var totalWeeks = Math.ceil(diffDays / 7);								
+								var startDateArray  = req.session.startDate.split("-");
+								var startDate = startDateArray[1];
+								var startMonth = startDateArray[0];
+
+								
 								console.log(docs[0].details);
 								sprintData=JSON.stringify(docs[0].details);
-								console.log(sprintData);
-								 console.log(sprintData);
-			            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData,pid:pid});
-							}
+								
+								if(docs[0].details != undefined)
+									{
+								
+								for(var i=0 ; i < docs[0].details.length; i++)
+									{
+									
+									   console.log(docs[0].details[i].TotalPoints);
+									   isInteger = parseInt(docs[0].details[i].TotalPoints);
+									   
+									   if(docs[0].details[i].TotalPoints != undefined && docs[0].details[i].TotalPoints != NaN)
+										   {
+										   totalPoints = parseInt(totalPoints) + parseInt(docs[0].details[i].TotalPoints);
+										   hoursWorked = parseInt(hoursWorked) + parseInt( docs[0].details[i].TotalPoints -  docs[0].details[i].RemainingPoints); 
+										   
+										   }
+									  
+									}
+								}
+								
+								
+										console.log("total time is "+ totalPoints);
+										console.log("hours worked is "+ hoursWorked);
+										console.log("start date is " + req.session.startDate);
+										console.log("end date is "+  req.session.endDate);				
+										
+										console.log('total weeks are'  + totalWeeks);
+										console.log('start date is ' + startDate);
+										console.log('start month is' + startMonth);
+										
+
+										var c1 = startMonth+"/"+startDate;								
+										var categories = [c1];								
+										var originalArray = [totalPoints];
+										var definedWork = Math.ceil(totalPoints / diffDays);
+										while (totalPoints > 0)
+											{
+											    totalPoints = totalPoints -  (7 * definedWork);
+											   
+											    if(totalPoints < 0)
+											    	{
+											    	totalPoints = 0;
+											    	}
+											    originalArray.push(totalPoints);
+											}
+								
+								
+																
+								var cur = new Date().toString().split(" ");
+								console.log(cur);
+								curDate = cur[2];
+								
+								console.log('cur date is'  + curDate);
+								
+								var curWeek = Math.ceil(curDate / 7);							
+								var remainingWeeks = totalWeeks - curWeek;								
+								var remainingWork = originalArray[0] - hoursWorked;								
+								var remainingPerDay = remainingWork / (remainingWeeks * 7);								
+								var remainArray = [];
+
+								console.log('remianing weeks are'+ remainingWeeks);
+								console.log('remaining work is' + remainingWork);
+								console.log('remainingi per day is' + remainingPerDay);
+								console.log('cur week is' + curWeek);
+							    remainArray.push(originalArray[0]);
+								
+								for(var j=0 ; j < curWeek ; j++)
+									{
+									
+									   var workDone = originalArray[0] -  (hoursWorked / curWeek);
+									   remainArray.push(workDone);
+									}
+							
+								if(hoursWorked > 0)
+									{
+								while (remainingWork > 0)
+								{
+									remainingWork = remainingWork -  (1 * hoursWorked);
+								   
+								    if(remainingWork < 0)
+								    	{
+								    	remainingWork = 0;
+								    	}
+								    remainArray.push(remainingWork);
+								    
+								}
+									}
+								
+								
+								console.log(remainArray);								
+								console.log(categories);
+								console.log(originalArray);
+							
+								}
+															
+			            		  res.render('scrum',{sprintFields:sprintFields,backlogFields:backlogFields,sprintsData:sprintData,pid:pid,
+			            			  categories: categories, originalArray: originalArray , remainingWork : remainArray});
+							});
 			            		  
-			      		});
-					} else {
+			      		
+					}
+
+					 else {
 						console.log("Error in Connection");
 					}
 				});
 
 				
-		      
-			/*	var options = {
-						  host: 'http://10.189.177.48',
-						  port:8080,
-						  path: 'multitenantSaasProject/projectDetails'
-						};
-				var request = http.get(options, function (response) {
-				    var data = '';
-				    response.on('data', function (chunk) {
-				        data += chunk;
-				    });
-				    response.on('end', function () {
-				    	console.log('from varun');
-				        console.log(data);
-				
-				    });
-				});
-				request.on('error', function (e) {
-				    console.log(e.message);
-				    
-				});*/
-				//request.end();
-				
-				
 				}
 		},sql);
-		
-
-	
+			
 	}
 };
 
 exports.getSprintData=function(req,res){
-	//mongo code to get sprint data
-	//var data='{sprintData:[	{		"Sprint Id":"1";"Sprint No":"2";"Sprint Description":"testing data"	}]}';
-	//res.send(JSON.parse(data));
+	// mongo code to get sprint data
+	// var data='{sprintData:[ { "Sprint Id":"1";"Sprint No":"2";"Sprint
+	// Description":"testing data" }]}';
+	// res.send(JSON.parse(data));
 };
 
-/*exports.newSprint=function(req,res){
-	console.log('here');
-	console.log("SCRUM: In Add Function...");
-    var data = '';
-	req.addListener('data', function(chunk) {
-		data += chunk;
-	});
-
-	var datagot='';
-	console.log(data);
-	req.addListener('end', function() {
-	   datagot = JSON.parse(data);
-	   console.log('SCRUM: data got -> '+datagot);
-
-		MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err_connection, db) {
-			if(!err_connection) {
-				console.log("SCRUM: Connected to Mongolab");
-				db.collection('projectDetails').update({ _id: 6}, { $push: { sprint: datagot } }, function(err_insertion, records) {
-					if(!err_insertion) {
-						console.log("SCRUM: Sprint Inserted Successfully...");
-						res.writeHead(200, {'content-type': 'text/plain'});
-						res.send();
-					} else {
-						console.log("SCRUM: Some Error inserting..."+err_insertion);
-						res.send(err_insertion);
-					}
-				});
-			} else {
-				console.log("SCRUM: Error in Connection..."+err_connection);
-				res.send(err_connection);
-			}
-		});
-	});
-}
-
-exports.updateSprint=function(req,res){
-	console.log("SCRUM: In Update Function...");
-
-    var data = '';
-	req.addListener('data', function(chunk) {
-		data += chunk;
-	});
-
-	var datagot='';
-	console.log(data);
-	req.addListener('end', function() {
-	   datagot = JSON.parse(data);
-	   console.log('SCRUM: data got -> '+datagot.SprintId +datagot.SprintNo +datagot.SprintDescription);
-
-		MongoClient.connect("mongodb://varun:varun@ds031862.mongolab.com:31862/multitenant_saas", function(err_connection, db) {
-			if(!err_connection) {
-				console.log("SCRUM: Connected to Mongolab");
-				db.collection('projectDetails').update({ _id: 6, "sprint.SprintId" : datagot.SprintId}, 
-					{ $set: { "sprint.$.SprintNo" : datagot.SprintNo, 
-								"sprint.$.SprintDescription" : datagot.SprintDescription } }, function(err_updation, records) {
-					if(!err_updation) {
-						console.log("SCRUM: Sprint Updated Successfully...");
-						res.writeHead(200, {'content-type': 'text/plain'});
-						res.send();
-					} else {
-						console.log("SCRUM: Some Error updating..."+err_updation);
-						res.send(err_updation);
-					}
-				});
-			} else {
-				console.log("SCRUM: Error in Connection..."+err_connection);
-				res.send(err_connection);
-			}
-		});
-	});
-}*/

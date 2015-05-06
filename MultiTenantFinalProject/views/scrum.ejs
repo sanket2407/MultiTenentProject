@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title id='Description'>In order to enter in edit mode, click any of the 'Edit' buttons. To save the changes, click the 'Save' button in the popup dialog. To cancel the changes
-    click the 'Cancel' button in the popup dialog.</title>
+    <title id='Description'>Scrum Methodology</title>
     <link rel="stylesheet" href="/jqwidgets/styles/jqx.base.css" type="text/css" />
     <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxcore.js"></script>
@@ -26,17 +25,76 @@
 <link href="../css/style.css" rel="stylesheet">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-   
+   <script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript">
-	
-	<%
-		if(doc!=null && doc.length!=0){
-		
-		}%>
-	
-	
-	
+
+ 
         $(document).ready(function () {
+
+
+<!--For Burndown Chart -->
+
+
+
+     var categories = <%=categories%>;
+     var actual = [<%=originalArray%>];
+     var remaining = [<%=remainingWork %>];
+
+     console.log(remaining);
+    $('#container').highcharts({
+        chart: {
+            type: 'areaspline'
+        },
+        title: {
+            text: 'Burndown Chart'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            x: 150,
+            y: 100,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+        },
+        xAxis: {
+            categories: categories,
+            plotBands: [{ // visualize the weekend
+                from: 200,
+                to: 400,
+                color: 'rgba(68, 170, 213, .2)'
+            }]
+        },
+        yAxis: {
+            title: {
+                text: 'Work Remaining'
+            }
+        },
+        tooltip: {
+            shared: true,
+            valueSuffix: ' units'
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            areaspline: {
+                fillOpacity: 0.2
+            }
+        },
+        series: [{
+            name: 'Actual',
+            data: actual
+        }, {
+            name: 'Projected',
+            data: remaining
+        }]
+    });
+
+
+
 		var temp=[];
 		var dataSprints;
 		<% 
@@ -210,7 +268,10 @@
                             type: 'POST',
                             data: JSON.stringify(row),
                             contentType: 'text/json',
-                            success: function() { console.log('sprint updated success'); },
+                            success: function() { console.log('sprint updated success');
+
+                               location.reload();
+                             },
                             error  : function() {   alert("Request failed: " ); }
                         });
                          var rowID = $('#jqxgrid').jqxGrid('getrowid', editrow);
@@ -340,7 +401,7 @@
 
 
 <div class="container"> 
-
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 	<table>
 	

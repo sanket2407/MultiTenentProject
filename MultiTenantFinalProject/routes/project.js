@@ -23,7 +23,7 @@ exports.list = function(req, res) {
 		var userid = req.params.userid;
 		console.log("comming");
 		var connection = getConnection();
-		var sqlQuery = "select p1.project_id, p1.project_name, p1.project_description, p2.model_name, p1.userid, p1.start_date, p1.end_date from project_master p1 join project_models p2 on p2.model_id = p1.project_type where userid = '"
+		var sqlQuery = "select p1.project_id, p1.project_name, p1.project_description, p2.model_name, p1.userid,  DATE_FORMAT(p1.start_date,'%m-%d-%Y') as 'start_date', DATE_FORMAT(p1.end_date,'%m-%d-%Y') as 'end_date' from project_master p1 join project_models p2 on p2.model_id = p1.project_type where userid = '"
 				+ userid + "' ";
 		connection.query(sqlQuery, function(err, rows, fields) {
 			if (err) {
@@ -61,7 +61,7 @@ exports.edit = function(req, res) {
 	var projectid = req.params.projectid;
 
 	var connection = getConnection();
-	var sqlQuery = "select project_type from project_master where userid='"+userid+"' and project_id='"+projectid+"'";
+	var sqlQuery = "select project_type,DATE_FORMAT(start_date,'%m-%d-%Y') as 'start_date', DATE_FORMAT(end_date,'%m-%d-%Y') as 'end_date' from project_master where userid='"+userid+"' and project_id='"+projectid+"'";
 			
 	connection.query(sqlQuery, function(err, rows, fields) {
 		if (err) {
@@ -73,6 +73,8 @@ exports.edit = function(req, res) {
 		} else {
 			if(rows[0].project_type === 1){
 				console.log("came at scrum");
+				req.session.startDate = rows[0].start_date;
+				req.session.endDate = rows[0].end_date;
 				res.redirect('/scrum/'+projectid);
 			}
 			else if(rows[0].project_type === 2){
