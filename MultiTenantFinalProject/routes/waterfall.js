@@ -47,7 +47,7 @@ exports.getTaskData=function(req,res){
 								console.log(sprintData);
 								console.log(sprintData);
 								console.log(pid);
-			            		  res.render('waterfall',{sprintFields:fields,sprintsData:sprintData, pid:pid});
+			            		  res.render('waterfall',{sprintFields:fields,sprintsData:sprintData, pid:pid,doc:docs[0].details});
 							}			            		 
 			      		});
 					} else {
