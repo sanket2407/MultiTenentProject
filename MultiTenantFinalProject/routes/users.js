@@ -3,16 +3,16 @@
 */
 
 /*Login Authentication. */
+var mysql=require('./mysql');
 
 exports.loginAuthentication = function(req, res){
 
-  req.getConnection(function(err,connection){
-	  
-	  var input = JSON.parse(JSON.stringify(req.body));
  
-        var query = connection.query("SELECT * FROM user WHERE email = '"+input.email+"' ",function(err,rows)
-        {
-        	   console.log(rows.length);
+    var input = JSON.parse(JSON.stringify(req.body));
+	var sql="SELECT * FROM user WHERE email ='"+input.email+"';";
+	  mysql.fetchData(function(err,rows){
+	  
+	       	   console.log(rows.length);
             if(err)
             {   console.log("Error Selecting : %s ",err );}
          
@@ -32,12 +32,9 @@ exports.loginAuthentication = function(req, res){
             		{
             		res.render('login',{page_title:"Customers - Node.js",error:"password is not correct"});
             		}
-            	}     
-           
-         });
-         
-         //console.log(query.sql);
-    });
+            	}  
+	  },sql);
+
   
 };
 
@@ -46,12 +43,9 @@ exports.loginAuthentication = function(req, res){
 exports.signup = function(req,res){
     
     var input = JSON.parse(JSON.stringify(req.body));
-    
-    req.getConnection(function (err, connection) {
-        
-        var query = connection.query("INSERT INTO user (firstname,lastname,email,password) values ('"+input.firstname+"','"+input.lastname+"','"+input.email+"','"+input.password+"') ",function(err, rows)
-        {
-  
+    var sql="INSERT INTO user (firstname,lastname,email,password) values ('"+input.firstname+"','"+input.lastname+"','"+input.email+"','"+input.password+"') ";
+	mysql.fetchData(function(err,rows){
+	
           if (err)
           {console.log("Error inserting : %s ",err );
           res.render('signup',{error : "user already exist"});
@@ -59,8 +53,9 @@ exports.signup = function(req,res){
           else{
           res.render('login',{error : "user is successfully created. Please Log in to continue!"});
           }
-        });
-    });
+       
+	},sql);
+  
 };
 
 /*Edit the user*/
@@ -73,23 +68,18 @@ exports.edit = function(req, res){
     
     //var email = req.params.email;
 	var loggedInUser = req.session.user;
-    req.getConnection(function(err,connection){
-       
-        var query = connection.query("SELECT * FROM user WHERE userid = '"+loggedInUser+"'",function(err,rows)
-        {
-            
-            if(err)
+	var sql="SELECT * FROM user WHERE userid = '"+loggedInUser+"'";
+   mysql.fetchData(function(err,rows){
+			if(err)
             {   console.log("Error Selecting : %s ",err );
                  res.render('error',{error:err});
             }
             else{
             res.render('edit_user',{page_title:"Edit Customers",data:rows,error:""});
             }
-           
-         });
-         
-         //console.log(query.sql);
-    }); 
+  
+   },sql);
+            
 };
 
 /*Save changes int the user*/
@@ -98,11 +88,8 @@ exports.edit_save = function(req,res){
     
     var input = JSON.parse(JSON.stringify(req.body));
     var userid = req.params.userid;
-    
- req.getConnection(function (err, connection) {
-        
-	   var query = connection.query("UPDATE user SET firstname = '"+input.firstname+"', lastname = '"+input.lastname+"', email = '"+input.email+"', password = '"+input.password+"' WHERE userid = '"+userid+"'",function(err, rows)
-        {  
+    var sql="UPDATE user SET firstname = '"+input.firstname+"', lastname = '"+input.lastname+"', email = '"+input.email+"', password = '"+input.password+"' WHERE userid = '"+userid+"'";
+	 mysql.fetchData(function(err,rows){
           if (err)
           {
         	  console.log("Error updating : %s ",err );
@@ -121,8 +108,7 @@ exports.edit_save = function(req,res){
           else{
           res.render('login',{error : "user is successfully Edited. Please Log in to continue!"});
           }
-        });
-    });
+	},sql);
     
 };
 
@@ -130,13 +116,9 @@ exports.edit_save = function(req,res){
 exports.delete_user = function(req,res){
           
      var email = req.params.email;
-    
-     req.getConnection(function (err, connection) {
-        
-        connection.query("DELETE FROM user WHERE email ='"+email+"'",function(err, rows)
-        {
-            
-             if(err)
+	 var sql="DELETE FROM user WHERE email ='"+email+"'";
+		 mysql.fetchData(function(err,rows){
+		 if(err)
              { console.log("Error deleting : %s ",err );
                res.render('error',{error:err});
              }
@@ -144,9 +126,9 @@ exports.delete_user = function(req,res){
              {
             	 res.render('signup',{error : "User"+email+" successfully deleted. Please create new account to continue."});
              }
-        });
-        
-     });
+		 
+		 },sql);
+    
 };
 
 

@@ -68,19 +68,6 @@ if ('development' === app.get('env')) {
     type koneksi : single,pool and request 
 -------------------------------------------*/
 
-app.use(
-    
-    connection(mysql,{
-    	
-        host: 'localhost',
-        user: 'root',
-        password : 'root',
-        port : 3306, //port mysql
-        database:'cmpe281'
-    },'pool') //or single
-
-);
-
 //user crud and index
 app.get('/', login.login);
 app.get('/login', login.login);
