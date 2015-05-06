@@ -79,9 +79,7 @@
 		var x = (dataTable.getNumberOfRows()*41 + 30).toString();
 		document.getElementById('timeline').style.height = x+'px';
 		<% } 
-		
-			console.log("^^^^^^^^^^");
-		
+				
 		var maxDate=new Date(Math.max.apply(null,dates));
 		var minDate=new Date(Math.min.apply(null,dates));
 		var mmin = minDate.getFullYear() + "/" + ("0" + (minDate.getMonth() + 1)).slice(-2) + "/" + minDate.getDate();
@@ -91,10 +89,6 @@
 		var date2 = new Date(mmax);
 		var timeDiff = Math.abs(date2.getTime() - date1.getTime());
 		var dd1 = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-		
-		console.log("^^^^^^^^^^");
-		console.log(dd1);
-		console.log("^^^^^^^^^^");
 		
 		var today = new Date();
 		var dd = today.getDate();
@@ -114,16 +108,11 @@
 		var timeDiff1 = Math.abs(date22.getTime() - date11.getTime());
 		var dd = Math.ceil(timeDiff1 / (1000 * 3600 * 24)); 
 		
-		console.log("^^^^^^^^^^");
-		console.log(dd);
-		console.log("^^^^^^^^^^");
-		
 		var percentComplete = (dd *100)/dd1;
-		console.log(percentComplete + "%");
 		%>
       }
 	  
-	  	var chart = AmCharts.makeChart( "chartdiv", {
+var chart = AmCharts.makeChart( "chartdiv", {
   "type": "pie",
   "theme": "light",
   "dataProvider": [ {
@@ -263,7 +252,9 @@
                             type: 'POST',
                             data: JSON.stringify(row),
                             contentType: 'text/json',
-                            success: function() { console.log('sprint updated success'); },
+                            success: function() { console.log('sprint updated success'); 
+							location.reload();
+							},
                             error  : function() {   alert("Request failed: " ); }
                         });
                          var rowID = $('#jqxgrid').jqxGrid('getrowid', editrow);
@@ -299,7 +290,9 @@
                             type: 'POST',
                             data: JSON.stringify(row),
                             contentType: 'text/json',
-                            success: function() { console.log('sprint addedd success'); },
+                            success: function() { console.log('sprint addedd success');
+							location.reload();
+							},
                             error  : function() {   alert("Request failed: " ); }
                         });
                    // var rowID = $('#jqxgrid').jqxGrid('getrowid', editrow);
@@ -332,57 +325,39 @@
 <body class='default'>
 	
 <div class="navbar navbar-fixed-top">
-
-    <div class="navbar-inner">
+   <div class="navbar-inner">
       <div class="container">
-
         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-
         <a class="brand" href="/">
           Software Modeling   
         </a>    
-
+        
         <div class="nav-collapse">
-
           <ul class="nav navbar-nav">
             <li><a href="/home">Home </a></li>
-
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Project <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#" onclick="OpenModal()" >Create Project</a></li>
-                <li><a href="#">View All Projects</a></li>
-
-              </ul>
-            </li>
-
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Profile <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Edit Profile</a></li>
-
-
+                <li><a href="/users/edit">Edit Profile</a></li>
               </ul>
             </li>
           </ul>
 
-          <ul class="nav pull-right">
-
+         <ul class="nav pull-right">
             <li class="">           
               <a href="/logout" class="">
                 Sign out
               </a>
-
             </li>
-          </ul>
-        </div><!--/.nav-collapse -->  
-      </div> <!-- /container -->
-    </div> <!-- /navbar-inner -->
-  </div> <!-- /navbar -->
+         </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <div class="container"> 
 <br>
@@ -473,5 +448,16 @@
     </div>
   </div>   
 </div>
+
+<div class="navbar navbar-fixed-bottom" style="height:20px;">
+   <div class="navbar-inner" >
+      <div class="container">
+        <a class="brand" href="">
+         <h5>© CMPE 281 Team 8 (Spring - 2015)</h5>
+        </a>    
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

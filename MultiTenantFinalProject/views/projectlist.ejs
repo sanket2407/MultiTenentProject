@@ -28,8 +28,6 @@
    $('#newProjectModal').modal('show'); 
  }
 
-
-
  $(document).ready(function(){    
   var len = <%=data.length%>;
   var str = "<table id='myTable' class='display table' width='100%'><thead><tr><th>Project Id</th><th>Project Name</th><th>Description</th><th>Model Type</th><th>Start Date</th><th>End Date</th></tr></thead><tbody>";
@@ -77,56 +75,6 @@ $('#startDate').datepicker({
                 }
               });
               
-  $(function () {
-  $(document).ready(function () {
-        
-        for(var i=0; i<6;i++)
-        {
-        $('#container'+i).highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            title: {
-                text: 'Project Status'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: false
-                    },
-                    showInLegend: true
-                }
-            },
-            series: [{
-                type: 'pie',
-                name: 'Story',
-                data: [
-                    {
-                        name: 'completed',
-                        y: 30,
-                        sliced: true,
-                        selected: true
-                    },
-                    {
-                        name: 'Remaining',
-                        y: 70
-                    },
-                ]
-            }]
-        });
-        }
-    });
-
-	});
-              
-
 });
 
 
@@ -156,13 +104,12 @@ $('#startDate').datepicker({
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Project <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#" onclick="OpenModal()" >Create Project</a></li>
-                <li><a href="#">View All Projects</a></li>
               </ul>
             </li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Profile <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Edit Profile</a></li>
+                <li><a href="/users/edit">Edit Profile</a></li>
               </ul>
             </li>
           </ul>
@@ -178,33 +125,14 @@ $('#startDate').datepicker({
       </div>
     </div>
   </div>
-
+<br>
+<br>
  <div class="container">
    <div class="main">
       <div class="main-inner">
         <div class="container">
           <div class="row">
           
-           <div class="span12">
-	 		<div id="loose" class="widget widget-table action-table">
-            <div class="widget-header"> <i class="icon-th-list"></i>
-              <h3>Project List</h3>
-            </div>
-            <!-- /widget-header -->
-            <div class="widget-content">
-          		<table>
-          		<tr>
-             	<td><div id="container0" style="min-width: 230px; height: 250px; max-width: 350px; margin: 0 auto"></div></td>
-          		<td><div id="container1" style="min-width: 230px; height: 250px; max-width: 350px; margin: 0 auto"></div></td>
-          		<td><div id="container2" style="min-width: 230px; height: 250px; max-width: 350px; margin: 0 auto"></div></td>
-          		<td><div id="container3" style="min-width: 230px; height: 250px; max-width: 350px; margin: 0 auto"></div></td>
-          		<td><div id="container4" style="min-width: 232px; height: 250px; max-width: 350px; margin: 0 auto"></div></td>
-            	</tr>
-            	</table>
-            </div>
-            <!-- /widget-content --> 
-    	 </div>
- 		</div>
           
          <div class="span12">
              <div id="loose" class="widget widget-table action-table">
@@ -223,7 +151,6 @@ $('#startDate').datepicker({
               <!-- /widget-content --> 
             </div>
           </div>
-          
           
         </div>
       </div>
@@ -245,12 +172,12 @@ $('#startDate').datepicker({
        <form class="form-horizontal">
         <div class="form-group">
           <label >Project Name</label>
-          <input type="text" class="form-control" id="projectName" placeholder="Jane Doe">
+          <input type="text" class="form-control" id="projectName" placeholder="project name">
         </div>
 
         <div class="form-group">
           <label >Description</label>
-          <input type="text" class="form-control" id="projectDesc" placeholder="jane.doe@example.com">
+          <input type="text" class="form-control" id="projectDesc" placeholder="description">
         </div>
 
         <div class="form-group">
@@ -259,8 +186,6 @@ $('#startDate').datepicker({
            <option value="Waterfall">Waterfall</option>
            <option value="Scrum">Scrum</option>
            <option value="Kanban">Kanban</option>
-
-
 
 
          </select>
@@ -289,14 +214,15 @@ $('#startDate').datepicker({
 </div>
 </div>
 
-
-<div class="navbar navbar-fixed-bottom">
-  <div class="container">
-    <h5>© CMPE 281 Team 8 (Spring - 2015)</h5>
+<div class="navbar navbar-fixed-bottom" style="height:20px;">
+   <div class="navbar-inner" >
+      <div class="container">
+        <a class="brand" href="">
+         <h5>© CMPE 281 Team 8 (Spring - 2015)</h5>
+        </a>    
+      </div>
+    </div>
   </div>
-
-</div>
-
 
 </body>
 
