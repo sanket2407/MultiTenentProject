@@ -5,7 +5,7 @@ function getConnection() {
 	var connection = mysql.createConnection({
 		host : 'localhost',
 		user : 'root',
-		password : 'root',
+		password : 'welcome1',
 		database : 'cmpe281',
 		multipleStatements : true
 	});
@@ -16,7 +16,7 @@ exports.list = function(req, res) {
 
 	var loggedInUser = req.session.user;
 
-	if (loggedInUser === null) {
+	if (loggedInUser == null) {
 		res.redirect("/login");
 	} else {
 
@@ -52,7 +52,7 @@ exports.edit = function(req, res) {
 	
 	var loggedInUser = req.session.user;
 
-	if (loggedInUser === null) {
+	if (loggedInUser == null) {
 		res.redirect("/login");
 	} else 
 	{
