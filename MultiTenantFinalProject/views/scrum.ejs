@@ -307,7 +307,7 @@
                         type: 'POST',
                         data: JSON.stringify(row),
                         contentType: 'text/json',
-                        success: function() { console.log('sprint addedd success'); },
+                        success: function() { console.log('sprint addedd success'); location.reload();},
                         error  : function() {   alert("Request failed: " ); }
                     });
                    // var rowID = $('#jqxgrid').jqxGrid('getrowid', editrow);
@@ -457,5 +457,18 @@
 	   
     </div>
     </div>
+ 
+<div class="navbar navbar-fixed-bottom" style="height:20px;">
+   <div class="navbar-inner" >
+      <div class="container">
+        <a class="brand" href=""  style="z-index: -1;">
+         <h5>© CMPE 281 Team 8 (Spring - 2015)</h5>
+        </a>    
+      </div>
+    </div>
+  </div>
+  
+  
+    
 </body>
 </html>
